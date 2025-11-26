@@ -42,7 +42,7 @@ function updateContent(lang) {
     }
   });
 
-  // Update active state of buttons
+  // Update active state of buttons (both desktop and mobile)
   document.querySelectorAll('.lang-btn').forEach(btn => {
     if (btn.getAttribute('data-lang') === lang) {
       btn.classList.add('active');
@@ -58,14 +58,19 @@ function updateContent(lang) {
 // Initialize Language
 const savedLang = localStorage.getItem('preferredLanguage') || 'en';
 
-// Wait for DOM to be ready to ensure elements exist
-document.addEventListener('DOMContentLoaded', () => {
+// Function to initialize language switching
+function initLanguageSwitching() {
+  // Apply saved language immediately
   updateContent(savedLang);
 
+  // Add click handlers to all language buttons
   document.querySelectorAll('.lang-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
+      e.preventDefault();
       const lang = e.target.getAttribute('data-lang');
-      updateContent(lang);
+      if (lang) {
+        updateContent(lang);
+      }
     });
   });
 
@@ -115,4 +120,12 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
-});
+}
+
+// Initialize everything when DOM is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initLanguageSwitching);
+} else {
+  // DOM already loaded
+  initLanguageSwitching();
+}
