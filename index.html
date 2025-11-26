@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="/logo.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CoreMind - AI Agent Solutions for Business</title>
+  <meta name="description"
+    content="CoreMind provides custom AI agent solutions for medium-sized enterprises. Automate sales, finance, and production workflows with intelligent agents.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+  <header id="header">
+    <nav class="container nav-container">
+      <a href="index.html" class="logo-link">
+        <img src="/logo.png" alt="CoreMind Logo" class="logo-icon">
+        <div class="logo">Core<span class="text-primary">Mind</span></div>
+      </a>
+      <ul class="nav-links">
+        <li><a href="about.html" data-i18n="nav.about">About</a></li>
+        <li><a href="index.html#services" data-i18n="nav.services">Services</a></li>
+        <li><a href="casestudies.html" data-i18n="nav.caseStudies">Case Studies</a></li>
+        <li><a href="index.html#references" data-i18n="nav.references">References</a></li>
+        <li><a href="index.html#contact" data-i18n="nav.contact">Contact</a></li>
+        <li class="mobile-lang-switcher">
+          <button class="lang-btn active" data-lang="en">EN</button>
+          <button class="lang-btn" data-lang="tr">TR</button>
+        </li>
+      </ul>
+
+      <div class="lang-switcher desktop-only">
+        <button class="lang-btn active" data-lang="en">EN</button>
+        <button class="lang-btn" data-lang="tr">TR</button>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <button class="mobile-menu-btn" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <a href="#contact" class="btn btn-primary" data-i18n="nav.getStarted">Get Started</a>
+    </nav>
+  </header>
+
+  <main id="app">
+    <section class="hero">
+      <div class="container hero-content">
+        <h1 data-i18n="hero.title">Future-Proof Your Business with <span class="text-gradient">Intelligent Agents</span>
+        </h1>
+        <p class="hero-subtitle" data-i18n="hero.subtitle">
+          Custom AI solutions for Sales, Finance, and Production.
+          Automate complex workflows and unlock new growth opportunities for your medium-sized enterprise.
+        </p>
+        <div class="hero-actions">
+          <a href="#contact" class="btn btn-primary" data-i18n="hero.bookConsultation">Book a Consultation</a>
+          <a href="#services" class="btn btn-outline" data-i18n="hero.exploreSolutions">Explore Solutions</a>
+        </div>
+      </div>
+      <div class="hero-background">
+        <div class="glow glow-1"></div>
+        <div class="glow glow-2"></div>
+      </div>
+    </section>
+
+    <section id="services" class="services">
+      <div class="container">
+        <div class="section-header">
+          <h2 data-i18n="services.title">Specialized Agents for <span class="text-gradient">Every Department</span></h2>
+          <p data-i18n="services.subtitle">Tailored AI solutions designed to integrate seamlessly into your existing
+            workflows.</p>
+        </div>
+
+        <div class="services-grid">
+          <!-- Sales Agent -->
+          <div class="glass-card service-card">
+            <div class="service-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 12h10" />
+                <path d="M9 4v16" />
+                <path d="m3 9 3 3-3 3" />
+                <path d="M14 8V6c0-1.1.9-2 2-2h4c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2h-4c-1.1 0-2-.9-2-2v-2" />
+                <path d="M20 12h-6" />
+              </svg>
+            </div>
+            <h3 data-i18n="services.sales.title">Sales Automation</h3>
+            <p data-i18n="services.sales.desc">Boost conversion rates with agents that handle lead qualification,
+              automated follow-ups, and CRM data
+              entry.</p>
+            <ul class="service-features">
+              <li data-i18n="services.sales.features.0">Lead Scoring & Routing</li>
+              <li data-i18n="services.sales.features.1">Automated Outreach</li>
+              <li data-i18n="services.sales.features.2">CRM Sync</li>
+            </ul>
+          </div>
+
+          <!-- Finance Agent -->
+          <div class="glass-card service-card">
+            <div class="service-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="1" x2="12" y2="23" />
+                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+              </svg>
+            </div>
+            <h3 data-i18n="services.finance.title">Finance Management</h3>
+            <p data-i18n="services.finance.desc">Gain real-time visibility into your cash flow and automate budget
+              tracking and expense categorization.
+            </p>
+            <ul class="service-features">
+              <li data-i18n="services.finance.features.0">Cash Flow Analysis</li>
+              <li data-i18n="services.finance.features.1">Budget Forecasting</li>
+              <li data-i18n="services.finance.features.2">Expense Auditing</li>
+            </ul>
+          </div>
+
+          <!-- Production Agent -->
+          <div class="glass-card service-card">
+            <div class="service-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path
+                  d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+                <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+                <line x1="12" y1="22.08" x2="12" y2="12" />
+              </svg>
+            </div>
+            <h3 data-i18n="services.production.title">Production Planning</h3>
+            <p data-i18n="services.production.desc">Optimize your supply chain with agents that manage Bill of Materials
+              (BOM) and predict inventory needs.
+            </p>
+            <ul class="service-features">
+              <li data-i18n="services.production.features.0">BOM Management</li>
+              <li data-i18n="services.production.features.1">Inventory Optimization</li>
+              <li data-i18n="services.production.features.2">Production Scheduling</li>
+            </ul>
+          </div>
+        </div>
+        <!-- References Section -->
+        <section id="references" class="approach">
+          <div class="container">
+            <div class="section-header">
+              <h2 data-i18n="references.title">Our <span class="text-gradient">References</span></h2>
+              <p data-i18n="references.subtitle">Trusted by leading companies across industries.</p>
+            </div>
+            <div class="timeline">
+              <div class="timeline-item fade-in">
+                <div class="timeline-number">1</div>
+                <div class="timeline-content">
+                  <h3 data-i18n="references.companies.0.name">TechCorp Industries</h3>
+                  <p data-i18n="references.companies.0.desc">Leading manufacturing company that improved production
+                    efficiency by 45% with our AI agents.</p>
+                </div>
+              </div>
+              <div class="timeline-item fade-in">
+                <div class="timeline-number">2</div>
+                <div class="timeline-content">
+                  <h3 data-i18n="references.companies.1.name">Global Logistics Ltd.</h3>
+                  <p data-i18n="references.companies.1.desc">International logistics provider that automated their
+                    entire sales pipeline, saving 20 hours per week.</p>
+                </div>
+              </div>
+              <div class="timeline-item fade-in">
+                <div class="timeline-number">3</div>
+                <div class="timeline-content">
+                  <h3 data-i18n="references.companies.2.name">FinanceFlow Solutions</h3>
+                  <p data-i18n="references.companies.2.desc">Financial services company that achieved real-time cash
+                    flow visibility and reduced manual errors by 90%.</p>
+                </div>
+              </div>
+              <div class="timeline-item fade-in">
+                <div class="timeline-number">4</div>
+                <div class="timeline-content">
+                  <h3 data-i18n="references.companies.3.name">SmartRetail Group</h3>
+                  <p data-i18n="references.companies.3.desc">Retail chain that optimized inventory management and
+                    increased customer satisfaction by 35%.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+    </section>
+
+    <section id="approach" class="approach">
+      <div class="container">
+        <div class="section-header">
+          <h2 data-i18n="approach.title">How We <span class="text-gradient">Work</span></h2>
+          <p data-i18n="approach.subtitle">A proven methodology to deliver high-impact AI agents.</p>
+        </div>
+
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-number">01</div>
+            <div class="timeline-content">
+              <h3 data-i18n="approach.steps.0.title">Analysis</h3>
+              <p data-i18n="approach.steps.0.desc">We audit your current workflows in Sales, Finance, or Production to
+                identify high-value automation
+                opportunities.</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-number">02</div>
+            <div class="timeline-content">
+              <h3 data-i18n="approach.steps.1.title">Development</h3>
+              <p data-i18n="approach.steps.1.desc">We build custom agents tailored to your specific data structure and
+                business rules.</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-number">03</div>
+            <div class="timeline-content">
+              <h3 data-i18n="approach.steps.2.title">Integration</h3>
+              <p data-i18n="approach.steps.2.desc">Seamless deployment into your existing software ecosystem with
+                minimal disruption.</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-number">04</div>
+            <div class="timeline-content">
+              <h3 data-i18n="approach.steps.3.title">Support</h3>
+              <p data-i18n="approach.steps.3.desc">Ongoing monitoring and optimization to ensure your agents adapt to
+                changing business needs.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="contact">
+      <div class="container contact-content">
+        <h2 data-i18n="contact.title">Ready to <span class="text-gradient">Automate?</span></h2>
+        <p data-i18n="contact.subtitle">Transform your business with intelligent agents today.</p>
+        <a href="mailto:contact@agentconsult.com" class="btn btn-primary btn-large" data-i18n="contact.button">Get a
+          Free Consultation</a>
+      </div>
+    </section>
+  </main>
+
+  <footer id="footer">
+    <div class="container footer-content">
+      <div class="footer-logo">Core<span class="text-primary">Mind</span></div>
+      <p class="copyright" data-i18n="footer.copyright">© 2025 CoreMind. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Scroll to Top Button -->
+  <button id="scrollToTop" class="scroll-to-top" aria-label="Scroll to top">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="18 15 12 9 6 15"></polyline>
+    </svg>
+  </button>
+
+  <script type="module" src="/main.js"></script>
+</body>
+
+</html>

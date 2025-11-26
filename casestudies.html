@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/logo.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Case Studies - CoreMind</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    <header id="header">
+        <nav class="container nav-container">
+            <a href="index.html" class="logo-link">
+                <img src="/logo.png" alt="CoreMind Logo" class="logo-icon">
+                <div class="logo">Core<span class="text-primary">Mind</span></div>
+            </a>
+            <ul class="nav-links">
+                <li><a href="about.html" data-i18n="nav.about">About</a></li>
+                <li><a href="index.html#services" data-i18n="nav.services">Services</a></li>
+                <li><a href="casestudies.html" class="active" data-i18n="nav.caseStudies">Case Studies</a></li>
+                <li><a href="index.html#references" data-i18n="nav.references">References</a></li>
+                <li><a href="index.html#contact" data-i18n="nav.contact">Contact</a></li>
+                <li class="mobile-lang-switcher">
+                    <button class="lang-btn active" data-lang="en">EN</button>
+                    <button class="lang-btn" data-lang="tr">TR</button>
+                </li>
+            </ul>
+
+            <div class="lang-switcher desktop-only">
+                <button class="lang-btn active" data-lang="en">EN</button>
+                <button class="lang-btn" data-lang="tr">TR</button>
+            </div>
+
+            <button class="mobile-menu-btn" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <a href="index.html#contact" class="btn btn-primary" data-i18n="nav.getStarted">Get Started</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero" style="min-height: 60vh;">
+            <div class="container hero-content">
+                <h1 data-i18n="caseStudies.hero.title">Success <span class="text-gradient">Stories</span></h1>
+                <p class="hero-subtitle" data-i18n="caseStudies.hero.subtitle">
+                    Real results from businesses that transformed their operations with CoreMind AI agents.
+                </p>
+            </div>
+        </section>
+
+        <section class="services">
+            <div class="container">
+                <div class="services-grid" style="grid-template-columns: 1fr;">
+                    <div class="glass-card">
+                        <h3 data-i18n="caseStudies.manufacturing.title">Manufacturing Company</h3>
+                        <h4 style="color: var(--primary-color); margin-bottom: 1rem;"
+                            data-i18n="caseStudies.manufacturing.subtitle">Production Planning Automation</h4>
+                        <p data-i18n="caseStudies.manufacturing.challenge"><strong>Challenge:</strong> Manual production
+                            planning taking 20+ hours weekly, frequent stockouts and overstock situations.</p>
+                        <p data-i18n="caseStudies.manufacturing.solution"><strong>Solution:</strong> Deployed a custom
+                            Production Agent to automate BOM updates and predict inventory needs based on order history.
+                        </p>
+                        <div style="display: flex; gap: 2rem; margin-top: 1.5rem;">
+                            <div style="text-align: center;">
+                                <span
+                                    style="display: block; font-size: 2rem; font-weight: 700; color: var(--accent-color);">-88%</span>
+                                <span style="font-size: 0.9rem; color: var(--text-secondary);"
+                                    data-i18n="caseStudies.manufacturing.metrics.planning">Planning Effort</span>
+                            </div>
+                            <div style="text-align: center;">
+                                <span
+                                    style="display: block; font-size: 2rem; font-weight: 700; color: var(--accent-color);">+15%</span>
+                                <span style="font-size: 0.9rem; color: var(--text-secondary);"
+                                    data-i18n="caseStudies.manufacturing.metrics.efficiency">Efficiency Gain</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card">
+                        <h3 data-i18n="caseStudies.logistics.title">Logistics Ltd.</h3>
+                        <h4 style="color: var(--primary-color); margin-bottom: 1rem;"
+                            data-i18n="caseStudies.logistics.subtitle">Sales & CRM Automation</h4>
+                        <p data-i18n="caseStudies.logistics.challenge"><strong>Challenge:</strong> Sales team
+                            overwhelmed with manual lead qualification and data entry, missing critical follow-ups.</p>
+                        <p data-i18n="caseStudies.logistics.solution"><strong>Solution:</strong> Implemented a Sales
+                            Agent to score leads automatically and sync email interactions with the CRM.</p>
+                        <div style="display: flex; gap: 2rem; margin-top: 1.5rem;">
+                            <div style="text-align: center;">
+                                <span
+                                    style="display: block; font-size: 2rem; font-weight: 700; color: var(--accent-color);">+40%</span>
+                                <span style="font-size: 0.9rem; color: var(--text-secondary);"
+                                    data-i18n="caseStudies.logistics.metrics.conversion">Conversion Rate</span>
+                            </div>
+                            <div style="text-align: center;">
+                                <span
+                                    style="display: block; font-size: 2rem; font-weight: 700; color: var(--accent-color);">20h</span>
+                                <span style="font-size: 0.9rem; color: var(--text-secondary);"
+                                    data-i18n="caseStudies.logistics.metrics.saved">Saved Per Week</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="contact">
+            <div class="container contact-content">
+                <h2 data-i18n="contact.title">Ready to Transform Your <span class="text-gradient">Business</span>?</h2>
+                <p data-i18n="contact.subtitle">Let's discuss how AI agents can streamline your operations.</p>
+                <a href="index.html#contact" class="btn btn-primary btn-large" data-i18n="contact.button">Get in
+                    Touch</a>
+            </div>
+        </section>
+    </main>
+
+    <footer id="footer">
+        <div class="container footer-content">
+            <div class="footer-logo">Core<span class="text-primary">Mind</span></div>
+            <p class="copyright" data-i18n="footer.copyright">© 2025 CoreMind. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <button id="scrollToTop" class="scroll-to-top" aria-label="Scroll to top">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="18 15 12 9 6 15"></polyline>
+        </svg>
+    </button>
+
+    <script type="module" src="/main.js"></script>
+</body>
+
+</html>

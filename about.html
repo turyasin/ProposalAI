@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/logo.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About Us - CoreMind</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    <header id="header">
+        <nav class="container nav-container">
+            <a href="index.html" class="logo-link">
+                <img src="/logo.png" alt="CoreMind Logo" class="logo-icon">
+                <div class="logo">Core<span class="text-primary">Mind</span></div>
+            </a>
+            <ul class="nav-links">
+                <li><a href="about.html" class="active" data-i18n="nav.about">About</a></li>
+                <li><a href="index.html#services" data-i18n="nav.services">Services</a></li>
+                <li><a href="casestudies.html" data-i18n="nav.caseStudies">Case Studies</a></li>
+                <li><a href="index.html#references" data-i18n="nav.references">References</a></li>
+                <li><a href="index.html#contact" data-i18n="nav.contact">Contact</a></li>
+                <li class="mobile-lang-switcher">
+                    <button class="lang-btn active" data-lang="en">EN</button>
+                    <button class="lang-btn" data-lang="tr">TR</button>
+                </li>
+            </ul>
+
+            <div class="lang-switcher desktop-only">
+                <button class="lang-btn active" data-lang="en">EN</button>
+                <button class="lang-btn" data-lang="tr">TR</button>
+            </div>
+
+            <button class="mobile-menu-btn" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <a href="index.html#contact" class="btn btn-primary" data-i18n="nav.getStarted">Get Started</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero" style="min-height: 60vh;">
+            <div class="container hero-content">
+                <h1 data-i18n="about.hero.title">About <span class="text-gradient">CoreMind</span></h1>
+                <p class="hero-subtitle" data-i18n="about.hero.subtitle">
+                    Empowering businesses with intelligent AI solutions that transform the way you work.
+                </p>
+            </div>
+        </section>
+
+        <section class="services">
+            <div class="container">
+                <div class="services-grid" style="grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));">
+                    <div class="glass-card">
+                        <div class="service-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                                <path d="M2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                            </svg>
+                        </div>
+                        <h3 data-i18n="about.mission.title">Our Mission</h3>
+                        <p data-i18n="about.mission.desc">To democratize AI technology by making intelligent automation
+                            accessible and practical for medium-sized enterprises, enabling them to compete with
+                            industry leaders through innovative agent-based solutions.</p>
+                    </div>
+
+                    <div class="glass-card">
+                        <div class="service-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="M12 16v-4M12 8h.01"></path>
+                            </svg>
+                        </div>
+                        <h3 data-i18n="about.vision.title">Our Vision</h3>
+                        <p data-i18n="about.vision.desc">To become the leading AI partner for growing businesses
+                            worldwide, creating a future where every company can harness the power of intelligent agents
+                            to unlock their full potential and drive sustainable growth.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="approach">
+            <div class="container">
+                <div class="section-header">
+                    <h2 data-i18n="about.values.title">Our <span class="text-gradient">Values</span></h2>
+                    <p data-i18n="about.values.subtitle">The principles that guide everything we do.</p>
+                </div>
+                <div class="timeline">
+                    <div class="timeline-item fade-in">
+                        <div class="timeline-number">1</div>
+                        <div class="timeline-content">
+                            <h3 data-i18n="about.values.items.0.title">Innovation</h3>
+                            <p data-i18n="about.values.items.0.desc">We constantly push boundaries to deliver
+                                cutting-edge AI solutions that solve real business challenges.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item fade-in">
+                        <div class="timeline-number">2</div>
+                        <div class="timeline-content">
+                            <h3 data-i18n="about.values.items.1.title">Transparency</h3>
+                            <p data-i18n="about.values.items.1.desc">We believe in open communication and clear
+                                explanations of how our AI agents work and deliver value.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item fade-in">
+                        <div class="timeline-number">3</div>
+                        <div class="timeline-content">
+                            <h3 data-i18n="about.values.items.2.title">Partnership</h3>
+                            <p data-i18n="about.values.items.2.desc">We view our clients as long-term partners,
+                                committed to their success and growth journey.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item fade-in">
+                        <div class="timeline-number">4</div>
+                        <div class="timeline-content">
+                            <h3 data-i18n="about.values.items.3.title">Excellence</h3>
+                            <p data-i18n="about.values.items.3.desc">We maintain the highest standards in everything we
+                                do, from code quality to customer service.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="services">
+            <div class="container">
+                <div class="section-header">
+                    <h2 data-i18n="about.team.title">Meet Our <span class="text-gradient">Team</span></h2>
+                    <p data-i18n="about.team.subtitle">Experts dedicated to strengthening your industry with intelligent
+                        agents.</p>
+                </div>
+
+                <div class="services-grid">
+                    <div class="glass-card service-card">
+                        <div class="service-icon"
+                            style="border-radius: 50%; width: 100px; height: 100px; margin: 0 auto var(--spacing-md); overflow: hidden; background: #eee;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" style="margin: 26px;">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                                <circle cx="12" cy="7" r="4" />
+                            </svg>
+                        </div>
+                        <h3 style="text-align: center;" data-i18n="about.team.members.0.name">Yasin Tür</h3>
+                        <p style="text-align: center; color: var(--primary-color); font-weight: 600;"
+                            data-i18n="about.team.members.0.role">CEO & Co-Founder</p>
+                        <p style="text-align: center;" data-i18n="about.team.members.0.desc">Expert in AI strategy and
+                            business process automation. Passionate about bridging the gap between complex technology
+                            and practical business needs.</p>
+                    </div>
+
+                    <div class="glass-card service-card">
+                        <div class="service-icon"
+                            style="border-radius: 50%; width: 100px; height: 100px; margin: 0 auto var(--spacing-md); overflow: hidden; background: #eee;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" style="margin: 26px;">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                                <circle cx="12" cy="7" r="4" />
+                            </svg>
+                        </div>
+                        <h3 style="text-align: center;" data-i18n="about.team.members.1.name">Emre Keskin</h3>
+                        <p style="text-align: center; color: var(--primary-color); font-weight: 600;"
+                            data-i18n="about.team.members.1.role">CTO & Co-Founder</p>
+                        <p style="text-align: center;" data-i18n="about.team.members.1.desc">Former Lead Engineer at
+                            major tech firms. Specializes in building scalable, secure, and reliable AI agent
+                            architectures.</p>
+                    </div>
+
+                    <div class="glass-card service-card">
+                        <div class="service-icon"
+                            style="border-radius: 50%; width: 100px; height: 100px; margin: 0 auto var(--spacing-md); overflow: hidden; background: #eee;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" style="margin: 26px;">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                                <circle cx="12" cy="7" r="4" />
+                            </svg>
+                        </div>
+                        <h3 style="text-align: center;" data-i18n="about.team.members.2.name">Bekir Sıtkı Tüzün</h3>
+                        <p style="text-align: center; color: var(--primary-color); font-weight: 600;"
+                            data-i18n="about.team.members.2.role">CSO & Co-Founder</p>
+                        <p style="text-align: center;" data-i18n="about.team.members.2.desc">Focuses on user experience
+                            and seamless integration. Ensures our agents are intuitive and solve real-world problems.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="contact">
+            <div class="container contact-content">
+                <h2 data-i18n="contact.teamTitle">Join Our <span class="text-gradient">Mission</span></h2>
+                <p data-i18n="contact.teamSubtitle">We are always looking for talent to help us shape the future of
+                    work.</p>
+                <a href="mailto:careers@coremind.ai" class="btn btn-primary btn-large"
+                    data-i18n="contact.teamButton">View Openings</a>
+            </div>
+        </section>
+    </main>
+
+    <footer id="footer">
+        <div class="container footer-content">
+            <div class="footer-logo">Core<span class="text-primary">Mind</span></div>
+            <p class="copyright" data-i18n="footer.copyright">© 2025 CoreMind. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <button id="scrollToTop" class="scroll-to-top" aria-label="Scroll to top">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="18 15 12 9 6 15"></polyline>
+        </svg>
+    </button>
+
+    <script type="module" src="/main.js"></script>
+</body>
+
+</html>
