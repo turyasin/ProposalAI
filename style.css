@@ -604,217 +604,147 @@ section {
     transition-delay: 0.2s;
 }
 
-.timeline .timeline-item:nth-child(4) {
-    transition-delay: 0.3s;
+/* Hide Header CTA Button on Mobile */
+.nav-container .btn-primary {
+    display: none !important;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-    body {
-        overflow-x: hidden;
-        width: 100%;
-    }
+/* Floating CTA Button - Always visible on mobile */
+.floating-cta {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 98;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 1.5rem;
+    background: var(--primary-color);
+    color: white;
+    border-radius: var(--radius-full);
+    font-weight: 600;
+    font-size: 0.9rem;
+    box-shadow: 0 8px 24px rgba(42, 51, 93, 0.3);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    text-decoration: none;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(100px);
+}
 
-    .container {
-        padding: 0 1rem;
-        max-width: 100%;
-    }
+.floating-cta.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
 
-    #header {
-        width: 100%;
-        left: 0;
-        transform: none;
-        padding: 0.5rem 1rem;
-        border-radius: 0;
-        top: 0;
-        border: none;
-        border-bottom: 1px solid var(--border-color);
-        background: rgba(255, 255, 255, 0.95);
-    }
+.floating-cta:hover {
+    border-radius: 2px;
+    transition: all 0.3s ease;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
 
-    .nav-container {
-        display: flex;
-        padding: 0;
-        justify-content: space-between;
-        align-items: center;
-        position: relative;
-        background: transparent;
-        border-radius: 0;
-        width: 100%;
-        max-width: 100%;
-    }
+/* Show Mobile Lang Switcher */
+.mobile-lang-switcher {
+    display: flex !important;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1rem 0;
+    border-top: 1px solid var(--border-color);
+    margin-top: 1rem;
+    width: 100%;
+}
 
-    /* Hide Desktop Lang Switcher */
-    .desktop-only {
-        display: none !important;
-    }
+.mobile-lang-switcher .lang-btn {
+    padding: 0.5rem 1.5rem;
+    border: 1px solid var(--border-color);
+    background: white;
+    font-size: 0.9rem;
+}
 
-    /* Hide Header CTA Button on Mobile */
-    .nav-container .btn-primary {
-        display: none !important;
-    }
+.mobile-lang-switcher .lang-btn.active {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
 
-    /* Floating CTA Button - Always visible on mobile */
-    .floating-cta {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        z-index: 98;
-        display: flex !important;
-        align-items: center;
-        justify-content: center;
-        padding: 1rem 1.5rem;
-        background: var(--primary-color);
-        color: white;
-        border-radius: var(--radius-full);
-        font-weight: 600;
-        font-size: 0.9rem;
-        box-shadow: 0 8px 24px rgba(42, 51, 93, 0.3);
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        cursor: pointer;
-        text-decoration: none;
-        opacity: 0;
-        visibility: hidden;
-        transform: translateY(100px);
-    }
+/* Mobile Navigation Links */
+.nav-links {
+    display: flex;
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background: white;
+    flex-direction: column;
+    padding: 1.5rem;
+    gap: 0.5rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transform: translateY(-150%);
+    opacity: 0;
+    transition: all 0.3s ease;
+    z-index: 10001;
+    border-radius: 0 0 var(--radius-md) var(--radius-md);
+    margin: 0;
+    max-height: 80vh;
+    overflow-y: auto;
+    width: 100%;
+    pointer-events: none;
+}
 
-    .floating-cta.visible {
-        opacity: 1;
-        visibility: visible;
-        transform: translateY(0);
-    }
+.nav-links.active {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: all;
+}
 
-    .floating-cta:hover {
-        background: var(--primary-hover);
-        transform: translateY(-3px);
-        box-shadow: 0 12px 32px rgba(218, 94, 69, 0.4);
-    }
+.nav-links li {
+    width: 100%;
+    text-align: center;
+}
 
-    /* Mobile Menu Button */
-    .mobile-menu-btn {
-        display: flex !important;
-        flex-direction: column !important;
-        justify-content: space-between !important;
-        order: 3;
-        position: relative;
-        z-index: 10002;
-        width: 30px;
-        height: 20px;
-        background: transparent;
-        border: none;
-        cursor: pointer;
-    }
+.nav-links a {
+    display: block;
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-sm);
+    font-size: 1.1rem;
+    text-align: center;
+    color: var(--text-color);
+}
 
-    .mobile-menu-btn span {
-        display: block !important;
-        width: 100% !important;
-        height: 2px !important;
-        background: var(--primary-color) !important;
-        border-radius: 2px;
-        transition: all 0.3s ease;
-        opacity: 1 !important;
-        visibility: visible !important;
-    }
+.nav-links a:hover {
+    background: var(--surface-color);
+    color: var(--primary-color);
+}
 
-    /* Show Mobile Lang Switcher */
-    .mobile-lang-switcher {
-        display: flex !important;
-        justify-content: center;
-        gap: 0.5rem;
-        padding: 1rem 0;
-        border-top: 1px solid var(--border-color);
-        margin-top: 1rem;
-        width: 100%;
-    }
+/* Typography & Layout Fixes */
+.hero h1 {
+    font-size: 2.5rem;
+    text-align: center;
+}
 
-    .mobile-lang-switcher .lang-btn {
-        padding: 0.5rem 1.5rem;
-        border: 1px solid var(--border-color);
-        background: white;
-        font-size: 0.9rem;
-    }
+.hero-subtitle {
+    font-size: 1.1rem;
+    text-align: center;
+}
 
-    .mobile-lang-switcher .lang-btn.active {
-        background: var(--primary-color);
-        color: white;
-        border-color: var(--primary-color);
-    }
+h1,
+h2,
+h3,
+.section-header {
+    text-align: center !important;
+}
 
-    /* Mobile Navigation Links */
-    .nav-links {
-        display: flex;
-        position: fixed;
-        top: 60px;
-        left: 0;
-        right: 0;
-        background: white;
-        flex-direction: column;
-        padding: 1.5rem;
-        gap: 0.5rem;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        transform: translateY(-150%);
-        opacity: 0;
-        transition: all 0.3s ease;
-        z-index: 10001;
-        border-radius: 0 0 var(--radius-md) var(--radius-md);
-        margin: 0;
-        max-height: 80vh;
-        overflow-y: auto;
-        width: 100%;
-        pointer-events: none;
-    }
+.footer-content {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    text-align: center;
+}
 
-    .nav-links.active {
-        transform: translateY(0);
-        opacity: 1;
-        pointer-events: all;
-    }
-
-    .nav-links li {
-        width: 100%;
-        text-align: center;
-    }
-
-    .nav-links a {
-        display: block;
-        padding: 0.75rem 1rem;
-        border-radius: var(--radius-sm);
-        font-size: 1.1rem;
-        text-align: center;
-        color: var(--text-color);
-    }
-
-    .nav-links a:hover {
-        background: var(--surface-color);
-        color: var(--primary-color);
-    }
-
-    /* Typography & Layout Fixes */
-    .hero h1 {
-        font-size: 2.5rem;
-        text-align: center;
-    }
-
-    .hero-subtitle {
-        font-size: 1.1rem;
-        text-align: center;
-    }
-
-    h1,
-    h2,
-    h3,
-    .section-header {
-        text-align: center !important;
-    }
-
-    .footer-content {
-        flex-direction: column;
-        gap: var(--spacing-sm);
-        text-align: center;
-    }
-
-    /* Adjust scroll-to-top button position to avoid overlap with floating CTA */
-    .scroll-to-top {
-        bottom: 90px;
-    }
+/* Adjust scroll-to-top button position to avoid overlap with floating CTA */
+.scroll-to-top {
+    bottom: 90px;
+}
 }
