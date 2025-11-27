@@ -160,70 +160,99 @@ export const translations = {
                 features: ["Nakit Akış Analizi", "Bütçe Tahmini", "Gider Denetimi"]
             },
             production: {
-                title: "Nasıl <span class='text-gradient'>Çalışıyoruz</span>",
-                subtitle: "Yüksek etkili yapay zeka ajanları sunmak için kanıtlanmış bir metodoloji.",
-                steps: [
-                    { title: "Analiz", desc: "Yüksek değerli otomasyon fırsatlarını belirlemek için Satış, Finans veya Üretim alanlarındaki mevcut iş akışlarınızı denetliyoruz." },
-                    { title: "Geliştirme", desc: "Özel veri yapınıza ve iş kurallarınıza göre uyarlanmış özel ajanlar oluşturuyoruz." },
-                    { title: "Entegrasyon", desc: "Mevcut yazılım ekosistemin minimum kesinti ile sorunsuz bir şekilde devreye alınması." },
-                    { title: "Destek", desc: "Ajanlarınızın değişen iş ihtiyaçlarına uyum sağlamasını sağlamak için sürekli izleme ve optimizasyon." }
+                title: "Üretim Planlama",
+                desc: "Malzeme Listelerini (BOM) yöneten ve envanter ihtiyaçlarını tahmin eden ajanlarla tedarik zincirinizi optimize edin.",
+                features: ["BOM Yönetimi", "Envanter Optimizasyonu", "Üretim Çizelgeleme"]
+            }
+        },
+        references: {
+            title: "<span class='text-gradient'>Referanslar</span>",
+            subtitle: "Sektör lideri şirketler tarafından güveniliyor.",
+            companies: [
+                { name: "TechCorp Industries", desc: "Yapay zeka ajanlarımızla üretim verimliliğini %45 artıran önde gelen üretim şirketi." },
+                { name: "Global Logistics Ltd.", desc: "Tüm satış sürecini otomatikleştirerek haftada 20 saat tasarruf sağlayan uluslararası lojistik sağlayıcısı." },
+                { name: "FinanceFlow Solutions", desc: "Gerçek zamanlı nakit akışı görünürlüğü elde eden ve manuel hataları %90 azaltan finansal hizmetler şirketi." },
+                { name: "SmartRetail Group", desc: "Envanter yönetimini optimize eden ve müşteri memnuniyetini %35 artıran perakende zinciri." }
+            ]
+        },
+        contact: {
+            title: "<span class='text-gradient'>Otomasyona</span> Hazır mısınız?",
+            subtitle: "İşletmenizi bugün akıllı ajanlarla dönüştürün.",
+            button: "Ücretsiz Danışmanlık Alın",
+            teamTitle: "Misyonumuza <span class='text-gradient'>Katılın</span>",
+            teamSubtitle: "İşin geleceğini şekillendirmemize yardımcı olacak yetenekleri her zaman arıyoruz.",
+            teamButton: "Açık Pozisyonları Gör",
+            successTitle: "<span class='text-gradient'>Başarı Hikayeleri</span>",
+            successSubtitle: "İşletmelerin akıllı ajanlarla nasıl dönüştüğünü görün.",
+            successButton: "Başarı Hikayelerini Görüntüle",
+            caseStudiesTitle: "Sonuçlara <span class='text-gradient'>Hazır mısınız?</span>",
+            caseStudiesSubtitle: "Bu başarıları işletmeniz için nasıl tekrarlayabileceğimizi tartışalım."
+        },
+        approach: {
+            title: "Nasıl <span class='text-gradient'>Çalışıyoruz</span>",
+            subtitle: "Yüksek etkili yapay zeka ajanları sunmak için kanıtlanmış bir metodoloji.",
+            steps: [
+                { title: "Analiz", desc: "Yüksek değerli otomasyon fırsatlarını belirlemek için Satış, Finans veya Üretim alanlarındaki mevcut iş akışlarınızı denetliyoruz." },
+                { title: "Geliştirme", desc: "Özel veri yapınıza ve iş kurallarınıza göre uyarlanmış özel ajanlar oluşturuyoruz." },
+                { title: "Entegrasyon", desc: "Mevcut yazılım ekosistemin minimum kesinti ile sorunsuz bir şekilde devreye alınması." },
+                { title: "Destek", desc: "Ajanlarınızın değişen iş ihtiyaçlarına uyum sağlamasını sağlamak için sürekli izleme ve optimizasyon." }
+            ]
+        },
+        about: {
+            hero: {
+                title: "<span class='text-gradient'>CoreMind</span> Hakkında",
+                subtitle: "Çalışma şeklinizi dönüştüren akıllı yapay zeka çözümleriyle işletmeleri güçlendiriyoruz."
+            },
+            mission: {
+                title: "Misyonumuz",
+                desc: "Akıllı otomasyonu orta ölçekli işletmeler için erişilebilir ve pratik hale getirerek yapay zeka teknolojisini demokratikleştirmek, yenilikçi ajan tabanlı çözümlerle sektör liderleriyle rekabet etmelerini sağlamak."
+            },
+            vision: {
+                title: "Vizyonumuz",
+                desc: "Dünya çapında büyüyen işletmeler için lider yapay zeka ortağı olmak, her şirketin akıllı ajanların gücünden yararlanarak tam potansiyelini açığa çıkarabileceği ve sürdürülebilir büyüme sağlayabileceği bir gelecek yaratmak."
+            },
+            values: {
+                title: "<span class='text-gradient'>Değerlerimiz</span>",
+                subtitle: "Yaptığımız her şeye rehberlik eden ilkeler.",
+                items: [
+                    { title: "İnovasyon", desc: "Gerçek iş zorluklarını çözen son teknoloji yapay zeka çözümleri sunmak için sürekli sınırları zorluyoruz." },
+                    { title: "Şeffaflık", desc: "Yapay zeka ajanlarımızın nasıl çalıştığına ve değer sunduğuna dair açık iletişim ve net açıklamalara inanıyoruz." },
+                    { title: "Ortaklık", desc: "Müşterilerimizi uzun vadeli ortaklar olarak görüyor, başarılarına ve büyüme yolculuklarına kendimizi adamış bulunuyoruz." },
+                    { title: "Mükemmellik", desc: "Kod kalitesinden müşteri hizmetlerine kadar yaptığımız her şeyde en yüksek standartları koruyoruz." }
                 ]
             },
-            about: {
-                hero: {
-                    title: "<span class='text-gradient'>CoreMind</span> Hakkında",
-                    subtitle: "Çalışma şeklinizi dönüştüren akıllı yapay zeka çözümleriyle işletmeleri güçlendiriyoruz."
-                },
-                mission: {
-                    title: "Misyonumuz",
-                    desc: "Akıllı otomasyonu orta ölçekli işletmeler için erişilebilir ve pratik hale getirerek yapay zeka teknolojisini demokratikleştirmek, yenilikçi ajan tabanlı çözümlerle sektör liderleriyle rekabet etmelerini sağlamak."
-                },
-                vision: {
-                    title: "Vizyonumuz",
-                    desc: "Dünya çapında büyüyen işletmeler için lider yapay zeka ortağı olmak, her şirketin akıllı ajanların gücünden yararlanarak tam potansiyelini açığa çıkarabileceği ve sürdürülebilir büyüme sağlayabileceği bir gelecek yaratmak."
-                },
-                values: {
-                    title: "<span class='text-gradient'>Değerlerimiz</span>",
-                    subtitle: "Yaptığımız her şeye rehberlik eden ilkeler.",
-                    items: [
-                        { title: "İnovasyon", desc: "Gerçek iş zorluklarını çözen son teknoloji yapay zeka çözümleri sunmak için sürekli sınırları zorluyoruz." },
-                        { title: "Şeffaflık", desc: "Yapay zeka ajanlarımızın nasıl çalıştığına ve değer sunduğuna dair açık iletişim ve net açıklamalara inanıyoruz." },
-                        { title: "Ortaklık", desc: "Müşterilerimizi uzun vadeli ortaklar olarak görüyor, başarılarına ve büyüme yolculuklarına kendimizi adamış bulunuyoruz." },
-                        { title: "Mükemmellik", desc: "Kod kalitesinden müşteri hizmetlerine kadar yaptığımız her şeyde en yüksek standartları koruyoruz." }
-                    ]
-                },
-                team: {
-                    title: "<span class='text-gradient'>Ekibimizle</span> Tanışın",
-                    subtitle: "Sektörünüzü akıllı ajanlarla güçlendirmeye kendini adamış uzmanlar.",
-                    members: [
-                        { name: "Yasin Tür", role: "CEO & Kurucu Ortak", desc: "Yapay zeka stratejisi ve iş süreci otomasyonunda uzman. Karmaşık teknoloji ile pratik iş ihtiyaçları arasındaki boşluğu doldurma konusunda tutkulu." },
-                        { name: "Emre Keskin", role: "CTO & Kurucu Ortak", desc: "Büyük teknoloji firmalarında eski Baş Mühendis. Ölçeklenebilir, güvenli ve güvenilir yapay zeka ajanı mimarileri oluşturma konusunda uzman." },
-                        { name: "Bekir Sıtkı Tüzün", role: "CSO & Kurucu Ortak", desc: "Kullanıcı deneyimi ve sorunsuz entegrasyona odaklanır. Ajanlarımızın sezgisel olmasını ve gerçek dünya sorunlarını çözmesini sağlar." }
-                    ]
-                }
-            },
-            caseStudies: {
-                hero: {
-                    title: "Başarı <span class='text-gradient'>Hikayeleri</span>",
-                    subtitle: "Yapay zeka ajanlarımızla operasyonlarını dönüştüren şirketlerden gerçek sonuçlar."
-                },
-                manufacturing: {
-                    title: "Manufacturing Co.",
-                    subtitle: "Üretim Planlama Optimizasyonu",
-                    challenge: "<strong>Zorluk:</strong> Verimsiz BOM yönetimi ve sık sık yaşanan envanter sıkıntıları üretim gecikmelerine yol açıyordu.",
-                    solution: "<strong>Çözüm:</strong> BOM güncellemelerini otomatikleştirmek ve sipariş geçmişine dayalı envanter ihtiyaçlarını tahmin etmek için özel bir Üretim Ajanı devreye alındı.",
-                    metrics: { planning: "Planlama Eforu", efficiency: "Verimlilik Artışı" }
-                },
-                logistics: {
-                    title: "Logistics Ltd.",
-                    subtitle: "Satış & CRM Otomasyonu",
-                    challenge: "<strong>Zorluk:</strong> Satış ekibi manuel potansiyel müşteri kalifikasyonu ve veri girişi ile boğuşuyor, kritik takipleri kaçırıyordu.",
-                    solution: "<strong>Çözüm:</strong> Potansiyel müşterileri otomatik olarak puanlamak ve e-posta etkileşimlerini CRM ile senkronize etmek için bir Satış Ajanı uygulandı.",
-                    metrics: { conversion: "Dönüşüm Oranı", saved: "Haftalık Tasarruf" }
-                }
-            },
-            footer: {
-                copyright: "© 2025 CoreMind. Tüm hakları saklıdır."
+            team: {
+                title: "<span class='text-gradient'>Ekibimizle</span> Tanışın",
+                subtitle: "Sektörünüzü akıllı ajanlarla güçlendirmeye kendini adamış uzmanlar.",
+                members: [
+                    { name: "Yasin Tür", role: "CEO & Kurucu Ortak", desc: "Yapay zeka stratejisi ve iş süreci otomasyonunda uzman. Karmaşık teknoloji ile pratik iş ihtiyaçları arasındaki boşluğu doldurma konusunda tutkulu." },
+                    { name: "Emre Keskin", role: "CTO & Kurucu Ortak", desc: "Büyük teknoloji firmalarında eski Baş Mühendis. Ölçeklenebilir, güvenli ve güvenilir yapay zeka ajanı mimarileri oluşturma konusunda uzman." },
+                    { name: "Bekir Sıtkı Tüzün", role: "CSO & Kurucu Ortak", desc: "Kullanıcı deneyimi ve sorunsuz entegrasyona odaklanır. Ajanlarımızın sezgisel olmasını ve gerçek dünya sorunlarını çözmesini sağlar." }
+                ]
             }
+        },
+        caseStudies: {
+            hero: {
+                title: "Başarı <span class='text-gradient'>Hikayeleri</span>",
+                subtitle: "Yapay zeka ajanlarımızla operasyonlarını dönüştüren şirketlerden gerçek sonuçlar."
+            },
+            manufacturing: {
+                title: "Manufacturing Co.",
+                subtitle: "Üretim Planlama Optimizasyonu",
+                challenge: "<strong>Zorluk:</strong> Verimsiz BOM yönetimi ve sık sık yaşanan envanter sıkıntıları üretim gecikmelerine yol açıyordu.",
+                solution: "<strong>Çözüm:</strong> BOM güncellemelerini otomatikleştirmek ve sipariş geçmişine dayalı envanter ihtiyaçlarını tahmin etmek için özel bir Üretim Ajanı devreye alındı.",
+                metrics: { planning: "Planlama Eforu", efficiency: "Verimlilik Artışı" }
+            },
+            logistics: {
+                title: "Logistics Ltd.",
+                subtitle: "Satış & CRM Otomasyonu",
+                challenge: "<strong>Zorluk:</strong> Satış ekibi manuel potansiyel müşteri kalifikasyonu ve veri girişi ile boğuşuyor, kritik takipleri kaçırıyordu.",
+                solution: "<strong>Çözüm:</strong> Potansiyel müşterileri otomatik olarak puanlamak ve e-posta etkileşimlerini CRM ile senkronize etmek için bir Satış Ajanı uygulandı.",
+                metrics: { conversion: "Dönüşüm Oranı", saved: "Haftalık Tasarruf" }
+            }
+        },
+        footer: {
+            copyright: "© 2025 CoreMind. Tüm hakları saklıdır."
         }
-    };
+    }
+};
