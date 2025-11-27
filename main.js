@@ -58,9 +58,9 @@ function updateContent(lang) {
   const workflowDiagram = document.getElementById('workflow-diagram');
   if (workflowDiagram) {
     if (lang === 'tr') {
-      workflowDiagram.src = './workflow-diagram-tr.png';
+      workflowDiagram.src = './workflow-diagram-tr.png?v=2';
     } else {
-      workflowDiagram.src = './workflow-diagram.png';
+      workflowDiagram.src = './workflow-diagram.png?v=2';
     }
   }
 }
