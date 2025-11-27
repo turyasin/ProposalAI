@@ -200,7 +200,7 @@ export const translations = {
         },
         about: {
             hero: {
-                title: "<span class='text-gradient'>CoreMind</span><br><span style='background: none; -webkit-text-fill-color: var(--primary-color); color: var(--primary-color);'>Hakkında</span>",
+                title: "<span class='text-gradient'>CoreMind</span><span class='desktop-space'> </span><br class='mobile-break'><span class='about-text'>Hakkında</span>",
                 subtitle: "Çalışma şeklinizi dönüştüren akıllı yapay zeka çözümleriyle işletmeleri güçlendiriyoruz."
             },
             mission: {
