@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - CoreMind Platform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="platform.css">
+</head>
+
+<body>
+    <div class="login-container">
+        <div class="glass-panel login-card">
+            <a href="../index.html" style="text-decoration: none; color: inherit;">
+                <div class="login-logo"><span class="text-gradient">Core</span>Mind</div>
+            </a>
+            <h2 style="margin-bottom: 10px;">Welcome Back</h2>
+            <p style="color: var(--text-muted); margin-bottom: 30px;">Sign in to manage your AI workforce</p>
+
+            <form onsubmit="event.preventDefault(); window.location.href='dashboard.html';">
+                <div class="input-group">
+                    <label>Work Email</label>
+                    <input type="email" class="input-field" placeholder="name@company.com" value="demo@coremind.ai">
+                </div>
+
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" class="input-field" value="password123">
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Sign In</button>
+            </form>
+
+            <p style="margin-top: 20px; font-size: 0.9rem; color: var(--text-muted);">
+                Don't have an account? <a href="#" style="color: var(--primary);">Contact Sales</a>
+            </p>
+        </div>
+    </div>
+</body>
+
+</html>
