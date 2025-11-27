@@ -107,6 +107,21 @@ p {
     background-clip: text;
 }
 
+/* About Title Styling */
+.about-text {
+    background: none;
+    -webkit-text-fill-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.mobile-break {
+    display: none;
+}
+
+.desktop-space {
+    display: inline;
+}
+
 section {
     padding: var(--spacing-xl) 0;
 }
@@ -757,43 +772,77 @@ section {
         color: var(--text-color);
     }
 
-    font-size: 1.75rem !important;
-}
+    .nav-links a:hover {
+        background: var(--surface-color);
+        color: var(--primary-color);
+    }
 
-h3 {
-    font-size: 1.5rem !important;
-}
+    .hero h1 {
+        font-size: 2rem;
+        text-align: center;
+        max-width: 100%;
+        word-wrap: break-word;
+        padding: 0 0.5rem;
+        line-height: 1.2;
+    }
 
-.section-header {
-    text-align: center !important;
-    max-width: 100%;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    padding: 0 0.5rem;
-}
+    .hero-subtitle {
+        font-size: 1rem;
+        text-align: center;
+        max-width: 100%;
+        padding: 0 1rem;
+    }
 
-.contact h2 {
-    font-size: 2rem !important;
-}
+    h1 {
+        font-size: 2rem !important;
+    }
 
-.hero-content,
-.contact-content {
-    max-width: 100%;
-    padding: 0 1rem;
-}
+    h2 {
+        font-size: 1.75rem !important;
+    }
 
-p {
-    max-width: 100%;
-    word-wrap: break-word;
-}
+    h3 {
+        font-size: 1.5rem !important;
+    }
 
-.footer-content {
-    flex-direction: column;
-    gap: var(--spacing-sm);
-    text-align: center;
-}
+    .section-header {
+        text-align: center !important;
+        max-width: 100%;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        padding: 0 0.5rem;
+    }
 
-.scroll-to-top {
-    bottom: 90px;
-}
+    .contact h2 {
+        font-size: 2rem !important;
+    }
+
+    .hero-content,
+    .contact-content {
+        max-width: 100%;
+        padding: 0 1rem;
+    }
+
+    p {
+        max-width: 100%;
+        word-wrap: break-word;
+    }
+
+    .footer-content {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+        text-align: center;
+    }
+
+    .scroll-to-top {
+        bottom: 90px;
+    }
+
+    .mobile-break {
+        display: block;
+    }
+
+    .desktop-space {
+        display: none;
+    }
 }
