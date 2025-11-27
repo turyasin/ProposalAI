@@ -53,6 +53,16 @@ function updateContent(lang) {
 
   localStorage.setItem('preferredLanguage', lang);
   document.documentElement.lang = lang;
+
+  // Update Workflow Diagram Image if it exists
+  const workflowDiagram = document.getElementById('workflow-diagram');
+  if (workflowDiagram) {
+    if (lang === 'tr') {
+      workflowDiagram.src = './workflow-diagram-tr.png';
+    } else {
+      workflowDiagram.src = './workflow-diagram.png';
+    }
+  }
 }
 
 // Initialize Language
