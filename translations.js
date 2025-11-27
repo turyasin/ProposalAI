@@ -23,18 +23,28 @@ export const translations = {
             subtitle: "Tailored AI solutions designed to integrate seamlessly into your existing workflows.",
             sales: {
                 title: "Sales Automation",
-                desc: "Boost conversion rates with agents that handle lead qualification, automated follow-ups, and CRM data entry.",
-                features: ["Lead Scoring & Routing", "Automated Outreach", "CRM Sync"]
+                desc: "<strong>Boost Revenue by 30%:</strong> Agents that handle lead qualification, automated follow-ups, and CRM data entry, allowing your team to close more deals.",
+                features: ["Lead Scoring & Routing", "Automated Outreach", "CRM Sync (Salesforce, HubSpot)"]
             },
             finance: {
                 title: "Finance Management",
-                desc: "Gain real-time visibility into your cash flow and automate budget tracking and expense categorization.",
-                features: ["Cash Flow Analysis", "Budget Forecasting", "Expense Auditing"]
+                desc: "<strong>Cut Processing Time by 90%:</strong> Gain real-time visibility into cash flow, automate invoice processing, and eliminate manual data entry errors.",
+                features: ["Cash Flow Analysis", "Automated Invoicing", "Expense Auditing (SAP, Oracle)"]
             },
             production: {
                 title: "Production Planning",
-                desc: "Optimize your supply chain with agents that manage Bill of Materials (BOM) and predict inventory needs.",
+                desc: "<strong>Optimize Inventory Levels:</strong> Agents that manage Bill of Materials (BOM) and predict inventory needs to prevent stockouts and overstocking.",
                 features: ["BOM Management", "Inventory Optimization", "Production Scheduling"]
+            },
+            consultancy: {
+                title: "AI Consultancy",
+                desc: "<strong>Strategic Roadmap:</strong> We analyze your business processes to identify high-impact automation opportunities and build a custom AI strategy.",
+                features: ["Process Audit", "ROI Analysis", "Technology Roadmap"]
+            },
+            integration: {
+                title: "Integration & Support",
+                desc: "<strong>Seamless Connectivity:</strong> We ensure our agents work perfectly with your existing stack (ERP, CRM, Slack, Teams) and provide ongoing maintenance.",
+                features: ["Custom API Integrations", "24/7 Monitoring", "Continuous Optimization"]
             }
         },
         references: {
@@ -151,18 +161,28 @@ export const translations = {
             subtitle: "Mevcut iş akışlarınıza sorunsuz bir şekilde entegre olmak üzere tasarlanmış özel yapay zeka çözümleri.",
             sales: {
                 title: "Satış Otomasyonu",
-                desc: "Potansiyel müşteri kalifikasyonu, otomatik takipler ve CRM veri girişini gerçekleştiren ajanlarla dönüşüm oranlarını artırın.",
-                features: ["Lider Puanlama & Yönlendirme", "Otomatik Erişim", "CRM Senkronizasyonu"]
+                desc: "<strong>Gelirlerinizi %30 Artırın:</strong> Potansiyel müşteri kalifikasyonu ve CRM veri girişini otomatize ederek ekibinizin satışa odaklanmasını sağlayın.",
+                features: ["Lider Puanlama & Yönlendirme", "Otomatik Erişim", "CRM Senkronizasyonu (Salesforce, HubSpot)"]
             },
             finance: {
                 title: "Finans Yönetimi",
-                desc: "Nakit akışınızda gerçek zamanlı görünürlük kazanın ve bütçe takibi ile gider kategorizasyonunu otomatikleştirin.",
-                features: ["Nakit Akış Analizi", "Bütçe Tahmini", "Gider Denetimi"]
+                desc: "<strong>İşlem Süresini %90 Kısaltın:</strong> Nakit akışında gerçek zamanlı görünürlük kazanın, fatura işlemeyi otomatikleştirin ve manuel hataları yok edin.",
+                features: ["Nakit Akış Analizi", "Otomatik Faturalama", "Gider Denetimi (SAP, Oracle)"]
             },
             production: {
                 title: "Üretim Planlama",
-                desc: "Malzeme Listelerini (BOM) yöneten ve envanter ihtiyaçlarını tahmin eden ajanlarla tedarik zincirinizi optimize edin.",
+                desc: "<strong>Envanteri Optimize Edin:</strong> Malzeme Listelerini (BOM) yöneten ve stoksuz kalmayı önlemek için ihtiyaçları tahmin eden ajanlar.",
                 features: ["BOM Yönetimi", "Envanter Optimizasyonu", "Üretim Çizelgeleme"]
+            },
+            consultancy: {
+                title: "Yapay Zeka Danışmanlığı",
+                desc: "<strong>Stratejik Yol Haritası:</strong> Yüksek etkili otomasyon fırsatlarını belirlemek için iş süreçlerinizi analiz ediyor ve size özel bir AI stratejisi oluşturuyoruz.",
+                features: ["Süreç Denetimi", "ROI Analizi", "Teknoloji Yol Haritası"]
+            },
+            integration: {
+                title: "Entegrasyon & Destek",
+                desc: "<strong>Kesintisiz Bağlantı:</strong> Ajanlarımızın mevcut sistemlerinizle (ERP, CRM, Slack, Teams) kusursuz çalışmasını sağlıyor ve sürekli bakım sunuyoruz.",
+                features: ["Özel API Entegrasyonları", "7/24 İzleme", "Sürekli Optimizasyon"]
             }
         },
         references: {
