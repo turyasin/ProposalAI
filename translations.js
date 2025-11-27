@@ -54,6 +54,9 @@ export const translations = {
             teamTitle: "Join Our <span class='text-gradient'>Mission</span>",
             teamSubtitle: "We are always looking for talent to help us shape the future of work.",
             teamButton: "View Openings",
+            successTitle: "Discover Our <span class='text-gradient'>Success Stories</span>",
+            successSubtitle: "See how we've helped businesses transform with intelligent agents.",
+            successButton: "View Success Stories",
             caseStudiesTitle: "Ready for <span class='text-gradient'>Results?</span>",
             caseStudiesSubtitle: "Let's discuss how we can replicate these successes for your business."
         },
@@ -179,6 +182,9 @@ export const translations = {
             teamTitle: "Misyonumuza <span class='text-gradient'>Katılın</span>",
             teamSubtitle: "İşin geleceğini şekillendirmemize yardımcı olacak yetenekleri her zaman arıyoruz.",
             teamButton: "Açık Pozisyonları Gör",
+            successTitle: "Başarı <span class='text-gradient'>Hikayelerimizi</span> Keşfedin",
+            successSubtitle: "İşletmelerin akıllı ajanlarla nasıl dönüştüğünü görün.",
+            successButton: "Başarı Hikayelerini Görüntüle",
             caseStudiesTitle: "Sonuçlara <span class='text-gradient'>Hazır mısınız?</span>",
             caseStudiesSubtitle: "Bu başarıları işletmeniz için nasıl tekrarlayabileceğimizi tartışalım."
         },
