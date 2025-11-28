@@ -1,89 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat - HR Assistant</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="platform.css">
-    <style>
-        .chat-container {
-            display: flex;
-            flex-direction: column;
-            height: calc(100vh - 140px);
-            /* Adjust based on header/padding */
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 12px;
-            border: 1px solid var(--border);
-            overflow: hidden;
-        }
+/* Adjust based on header/padding */
+background: rgba(0, 0, 0, 0.2);
+border-radius: 12px;
+border: 1px solid var(--border);
+overflow: hidden;
+}
 
-        .chat-messages {
-            flex: 1;
-            padding: 20px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
+.chat-messages {
+flex: 1;
+padding: 20px;
+overflow-y: auto;
+display: flex;
+flex-direction: column;
+gap: 15px;
+}
 
-        .message {
-            max-width: 80%;
-            padding: 12px 16px;
-            border-radius: 12px;
-            font-size: 0.95rem;
-            line-height: 1.5;
-        }
+.message {
+max-width: 80%;
+padding: 12px 16px;
+border-radius: 12px;
+font-size: 0.95rem;
+line-height: 1.5;
+}
 
-        .message.user {
-            align-self: flex-end;
-            background: var(--primary-gradient);
-            color: white;
-            border-bottom-right-radius: 2px;
-        }
+.message.user {
+align-self: flex-end;
+background: var(--primary-gradient);
+color: white;
+border-bottom-right-radius: 2px;
+}
 
-        .message.bot {
-            align-self: flex-start;
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--text-main);
-            border-bottom-left-radius: 2px;
-        }
+.message.bot {
+align-self: flex-start;
+background: rgba(255, 255, 255, 0.1);
+color: var(--text-main);
+border-bottom-left-radius: 2px;
+}
 
-        .chat-input-area {
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.3);
-            border-top: 1px solid var(--border);
-            display: flex;
-            gap: 10px;
-        }
+.chat-input-area {
+padding: 20px;
+background: rgba(0, 0, 0, 0.3);
+border-top: 1px solid var(--border);
+display: flex;
+gap: 10px;
+}
 
-        .chat-input {
-            flex: 1;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 12px;
-            color: white;
-            font-family: inherit;
-            resize: none;
-            height: 50px;
-        }
+.chat-input {
+flex: 1;
+background: rgba(255, 255, 255, 0.05);
+border: 1px solid var(--border);
+border-radius: 8px;
+padding: 12px;
+color: white;
+font-family: inherit;
+resize: none;
+height: 50px;
+}
 
-        .chat-input:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
+.chat-input:focus {
+outline: none;
+border-color: var(--primary);
+}
 
-        .typing-indicator {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            margin-left: 10px;
-            display: none;
-        }
-    </style>
+.typing-indicator {
+font-size: 0.8rem;
+color: var(--text-muted);
+margin-left: 10px;
+display: none;
+}
+</style>
 </head>
 
 <body>
