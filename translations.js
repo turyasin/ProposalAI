@@ -6,7 +6,8 @@ export const translations = {
             about: "About",
             references: "References",
             contact: "Contact",
-            getStarted: "Get Started"
+            getStarted: "Get Started",
+            login: "Login"
         },
         hero: {
             title: "Future-Proof Your Business with <span class='text-gradient'>Intelligent Agents</span>",
@@ -144,7 +145,8 @@ export const translations = {
             about: "Hakkımızda",
             references: "Referanslar",
             contact: "İletişim",
-            getStarted: "Başlayın"
+            getStarted: "Başlayın",
+            login: "Giriş"
         },
         hero: {
             title: "İşletmenizi <span class='text-gradient'>Akıllı AI Çalışanlarla</span> Geleceğe Hazırlayın",
