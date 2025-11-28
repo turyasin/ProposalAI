@@ -38,49 +38,64 @@
                 Don't have an account? <a href="#" style="color: var(--primary);">Contact Sales</a>
             </p>
         </div>
+    </div>
+
+    <!-- Supabase Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script>
+        // Initialize Supabase
+        const supabaseUrl = 'https://camyogwbseuxfrjxnjzw.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNhbXlvZ3dic2V1eGZyanhuanp3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQzMjE2MTgsImV4cCI6MjA3OTg5NzYxOH0.4Y52Wow4bIDEV8pvKDGPiqSr4JQI804ptxQGtzYFPAE';
+        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+        const loginForm = document.getElementById('loginForm');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const submitBtn = document.querySelector('.btn-primary');
 
         loginForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
+            e.preventDefault();
 
-        const email = emailInput.value;
-        const password = passwordInput.value;
+            const email = emailInput.value;
+            const password = passwordInput.value;
 
-        // Show loading state
-        submitBtn.textContent = 'Signing in...';
-        submitBtn.disabled = true;
+            // Show loading state
+            submitBtn.textContent = 'Signing in...';
+            submitBtn.disabled = true;
 
-        try {
-        const { data, error } = await supabase.auth.signInWithPassword({
-        email: email,
-        password: password,
-        });
+            try {
+                const { data, error } = await supabase.auth.signInWithPassword({
+                    email: email,
+                    password: password,
+                });
 
-        if (error) throw error;
+                if (error) throw error;
 
-        // Login successful
-        console.log('User logged in:', data.user);
-        window.location.href = 'dashboard.html';
+                // Login successful
+                console.log('User logged in:', data.user);
+                window.location.href = 'dashboard.html';
 
-        } catch (error) {
-        console.error('Login error:', error.message);
-        alert('Login failed: ' + error.message);
+            } catch (error) {
+                console.error('Login error:', error.message);
+                alert('Login failed: ' + error.message);
 
-        // Reset button
-        submitBtn.textContent = 'Sign In';
-        submitBtn.disabled = false;
-        }
+                // Reset button
+                submitBtn.textContent = 'Sign In';
+                submitBtn.disabled = false;
+            }
         });
 
         // Check if already logged in
         async function checkSession() {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (session) {
-        window.location.href = 'dashboard.html';
-        }
+            const { data: { session } } = await supabase.auth.getSession();
+            if (session) {
+                window.location.href = 'dashboard.html';
+            }
         }
 
         checkSession();
-        </script>
+    </script>
 </body>
 
 </html>
