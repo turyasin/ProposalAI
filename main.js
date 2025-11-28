@@ -1,4 +1,4 @@
-import './style.css'
+
 import { translations } from './translations.js';
 
 // Scroll Animations
