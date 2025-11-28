@@ -1,0 +1,19 @@
+{
+    "name": "coremind-flowise",
+    "version": "1.0.0",
+    "description": "CoreMind AI Platform - Flowise Backend",
+    "main": "index.js",
+    "scripts": {
+        "start": "npx flowise start"
+    },
+    "keywords": [
+        "flowise",
+        "ai",
+        "chatbot"
+    ],
+    "author": "CoreMind",
+    "license": "MIT",
+    "dependencies": {
+        "flowise": "^1.4.0"
+    }
+}
