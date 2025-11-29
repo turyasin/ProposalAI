@@ -1,11 +1,11 @@
 :root {
-    --bg-dark: #0a0a0a;
-    --bg-card: rgba(255, 255, 255, 0.03);
-    --bg-card-hover: rgba(255, 255, 255, 0.07);
-    --primary: #3b82f6;
-    --primary-gradient: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-    --text-main: #ffffff;
-    --text-muted: #a1a1aa;
+    --bg-dark: #353537;
+    --bg-card: rgba(255, 255, 255, 0.05);
+    --bg-card-hover: rgba(255, 255, 255, 0.08);
+    --primary: #77B1AD;
+    --primary-gradient: linear-gradient(135deg, #F85F68 0%, #77B1AD 100%);
+    --text-main: #DFDFDE;
+    --text-muted: rgba(223, 223, 222, 0.7);
     --border: rgba(255, 255, 255, 0.1);
     --sidebar-width: 260px;
     --header-height: 70px;
@@ -220,7 +220,7 @@
 .agent-icon {
     width: 48px;
     height: 48px;
-    background: rgba(59, 130, 246, 0.1);
+    background: rgba(119, 177, 173, 0.1);
     border-radius: 12px;
     display: flex;
     align-items: center;
@@ -308,8 +308,7 @@
         z-index: 1000;
         transform: translateX(-100%);
         transition: transform 0.3s ease;
-        background: #0a0a0a;
-        /* Solid background for mobile sidebar */
+        background: #353537;
         border-right: 1px solid var(--border);
         box-shadow: 4px 0 15px rgba(0, 0, 0, 0.5);
     }
@@ -325,12 +324,10 @@
     .top-bar {
         padding: 0 15px;
         justify-content: flex-start;
-        /* Align items to start to accommodate menu btn */
     }
 
     .top-bar h2 {
         margin-right: auto;
-        /* Push profile to right */
     }
 
     .content-area {
@@ -347,6 +344,5 @@
 
     .chat-container {
         height: calc(100vh - 100px);
-        /* Adjust for mobile header */
     }
 }
