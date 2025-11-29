@@ -266,15 +266,35 @@
                 let data;
 
                 if (file) {
-                    // Send as FormData if file exists
-                    const formData = new FormData();
-                    formData.append("files", file);
-                    formData.append("question", question || "Analyze this document");
-                    formData.append("overrideConfig", JSON.stringify({ sessionId: sessionId }));
+                    // Step 1: Upsert the file to vector store
+                    const upsertUrl = API_URL.replace('/prediction/', '/vector/upsert/');
+                    const upsertFormData = new FormData();
+                    upsertFormData.append("files", file);
 
+                    console.log("Uploading file to vector store...");
+                    const upsertResponse = await fetch(upsertUrl, {
+                        method: "POST",
+                        body: upsertFormData
+                    });
+
+                    if (!upsertResponse.ok) {
+                        throw new Error("Failed to upload document to vector store");
+                    }
+
+                    console.log("File uploaded successfully, now querying...");
+
+                    // Step 2: Ask the question
                     response = await fetch(API_URL, {
                         method: "POST",
-                        body: formData
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            question: question || "Bu dosya hakkında bana özet bilgi ver",
+                            overrideConfig: {
+                                sessionId: sessionId
+                            }
+                        })
                     });
                 } else {
                     // Send as JSON if text only
