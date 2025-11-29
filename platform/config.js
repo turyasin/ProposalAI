@@ -1,4 +1,4 @@
 window.CONFIG = {
-    // Flowise API URL - Production
-    FLOWISE_API_URL: "https://cloud.flowiseai.com/api/v1/prediction/ff7506fd-7270-4162-a96f-45ff0241dec5"
+    // Flowise API URL - Production (Updated with dynamic file upload support)
+    FLOWISE_API_URL: "https://cloud.flowiseai.com/api/v1/prediction/6cfda690-dead-40c1-bc44-2f48fcb57c0b"
 };
