@@ -269,7 +269,7 @@
                     const formData = new FormData();
                     formData.append("files", file);
                     formData.append("question", question || "Analyze this document");
-                    formData.append("sessionId", sessionId);
+                    formData.append("overrideConfig", JSON.stringify({ sessionId: sessionId }));
 
                     response = await fetch(API_URL, {
                         method: "POST",
