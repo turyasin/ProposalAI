@@ -1,4 +1,4 @@
 window.CONFIG = {
-    // Flowise API URL - Production
-    FLOWISE_API_URL: "https://cloud.flowiseai.com/api/v1/prediction/ff7506fd-7270-4162-a96f-45ff0241dec5"
+    // Flowise API URL - Production (Render.com)
+    FLOWISE_API_URL: "https://coremind-flowise.onrender.com/api/v1/prediction/f987b246-64e1-4614-89ad-a9c6528ff7b1"
 };
