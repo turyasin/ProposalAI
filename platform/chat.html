@@ -250,21 +250,6 @@
             if (file) {
                 displayMessage = `[File: ${file.name}] ${question}`;
             }
-            appendMessage(displayMessage, 'user');
-
-            input.value = '';
-
-            // Show Typing
-            msgDiv.textContent = text;
-            messagesDiv.appendChild(msgDiv);
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
-        }
-
-        function handleKeyPress(event) {
-            if (event.key === 'Enter') {
-                sendMessage();
-            }
-        }
     </script>
 </body>
 
