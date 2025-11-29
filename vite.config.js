@@ -10,5 +10,8 @@ export default defineConfig({
                 casestudies: 'casestudies.html'
             }
         }
+    },
+    server: {
+        allowedHosts: true
     }
 })
