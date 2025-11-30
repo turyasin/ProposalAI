@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/platform/crm/static/css/main.1e7f8aab.css",
+    "main.js": "/platform/crm/static/js/main.f6f9f700.js",
+    "index.html": "/platform/crm/index.html",
+    "main.1e7f8aab.css.map": "/platform/crm/static/css/main.1e7f8aab.css.map",
+    "main.f6f9f700.js.map": "/platform/crm/static/js/main.f6f9f700.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.1e7f8aab.css",
+    "static/js/main.f6f9f700.js"
+  ]
+}
