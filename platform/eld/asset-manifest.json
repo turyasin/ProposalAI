@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/platform/eld/static/css/main.1e6d64dd.css",
-    "main.js": "/platform/eld/static/js/main.d866879c.js",
+    "main.js": "/platform/eld/static/js/main.2dadae7e.js",
     "index.html": "/platform/eld/index.html",
     "main.1e6d64dd.css.map": "/platform/eld/static/css/main.1e6d64dd.css.map",
-    "main.d866879c.js.map": "/platform/eld/static/js/main.d866879c.js.map"
+    "main.2dadae7e.js.map": "/platform/eld/static/js/main.2dadae7e.js.map"
   },
   "entrypoints": [
     "static/css/main.1e6d64dd.css",
-    "static/js/main.d866879c.js"
+    "static/js/main.2dadae7e.js"
   ]
 }
