@@ -1,0 +1,469 @@
+import React, { useState } from 'react';
+import { X, Building2, FileText, User, Calendar } from 'lucide-react';
+
+export function ProposalDraftModal({
+    isOpen,
+    onClose,
+    product,
+    calculation,
+    params,
+    companies,
+    onSave,
+    basket, // Receive basket prop
+    initialData, // Receive initial data for editing
+    onCancel // Receive onCancel handler
+}) {
+    const [formData, setFormData] = useState({
+        companyId: '',
+        contactIndex: '',
+        paymentTerms: '30 gün içinde ödeme',
+        preparedBy: '',
+        preparedByTitle: '',
+        preparedByEmail: '',
+        preparedByPhone: '',
+        validityDays: 30,
+        notes: ''
+    });
+
+    // Populate form data when initialData is provided
+    React.useEffect(() => {
+        if (initialData) {
+            // Find contact index if possible
+            const company = companies.find(c => c.id === initialData.company.id);
+            let contactIdx = '';
+            if (company && company.contacts) {
+                const idx = company.contacts.findIndex(c => c.name === initialData.company.contact_person);
+                if (idx !== -1) contactIdx = idx;
+            }
+
+            setFormData({
+                companyId: initialData.company.id || '',
+                contactIndex: contactIdx,
+                paymentTerms: initialData.paymentTerms || '30 gün içinde ödeme',
+                preparedBy: initialData.preparedBy?.name || '',
+                preparedByTitle: initialData.preparedBy?.title || '',
+                preparedByEmail: initialData.preparedBy?.email || '',
+                preparedByPhone: initialData.preparedBy?.phone || '',
+                validityDays: initialData.validityDays || 30,
+                notes: initialData.notes || ''
+            });
+        } else {
+            // Reset form if no initialData (new proposal)
+            setFormData({
+                companyId: '',
+                contactIndex: '',
+                paymentTerms: '30 gün içinde ödeme',
+                preparedBy: '',
+                preparedByTitle: '',
+                preparedByEmail: '',
+                preparedByPhone: '',
+                validityDays: 30,
+                notes: ''
+            });
+        }
+    }, [initialData, companies, isOpen]);
+
+    if (!isOpen) return null;
+
+    // Calculate total price from basket or single product
+    const totalPrice = basket && basket.length > 0
+        ? basket.reduce((sum, item) => sum + (item.calculation.suggested_price * (item.quantity || 1)), 0)
+        : (calculation?.suggested_price || 0);
+
+    const totalPriceTry = basket && basket.length > 0
+        ? basket.reduce((sum, item) => sum + (item.calculation.price_try * (item.quantity || 1)), 0)
+        : (calculation?.price_try || 0);
+
+    const selectedCompany = companies.find(c => c.id === parseInt(formData.companyId));
+
+    // Prepare contacts list for the selected company
+    let companyContacts = selectedCompany?.contacts || [];
+    // Legacy support: if no contacts array but legacy fields exist, create a temporary contact
+    if (selectedCompany && companyContacts.length === 0 && selectedCompany.contact_person) {
+        companyContacts = [{
+            name: selectedCompany.contact_person,
+            title: selectedCompany.contact_title,
+            email: selectedCompany.email,
+            phone: selectedCompany.phone
+        }];
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        const selectedContact = companyContacts[parseInt(formData.contactIndex)] || {};
+
+        // Merge selected contact info into company data for the proposal
+        // This ensures the PDF template uses the selected contact person
+        const finalCompanyData = {
+            ...selectedCompany,
+            contact_person: selectedContact.name || selectedCompany.contact_person,
+            contact_title: selectedContact.title || selectedCompany.contact_title,
+            email: selectedContact.email || selectedCompany.email,
+            phone: selectedContact.phone || selectedCompany.phone
+        };
+
+        // Prepare items list
+        const items = basket && basket.length > 0
+            ? basket
+            : [{ product, calculation }];
+
+        const proposalData = {
+            proposalNo: `PR-${Date.now().toString().slice(-6)}`,
+            date: new Date().toISOString(),
+            items: items, // Save all items
+            product: items[0].product, // Keep main product for legacy support if needed
+            calculation: items[0].calculation, // Keep main calc for legacy support
+            totalPrice: totalPrice,
+            totalPriceTry: totalPriceTry,
+            company: finalCompanyData,
+            paymentTerms: formData.paymentTerms,
+            preparedBy: {
+                name: formData.preparedBy,
+                title: formData.preparedByTitle,
+                email: formData.preparedByEmail,
+                phone: formData.preparedByPhone
+            },
+            validityDays: formData.validityDays,
+            notes: formData.notes
+        };
+
+        onSave(proposalData);
+        onClose();
+    };
+
+    return (
+        <div style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: 'rgba(0,0,0,0.8)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1000,
+            padding: '2rem'
+        }}>
+            <div className="glass-panel" style={{
+                maxWidth: '800px',
+                width: '100%',
+                maxHeight: '90vh',
+                overflowY: 'auto',
+                padding: '2rem'
+            }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+                    <h2>Teklif Oluştur</h2>
+                    <button
+                        onClick={onClose}
+                        style={{
+                            background: 'none',
+                            border: 'none',
+                            color: 'white',
+                            cursor: 'pointer',
+                            padding: '0.5rem'
+                        }}
+                    >
+                        <X size={24} />
+                    </button>
+                </div>
+
+                <form onSubmit={handleSubmit}>
+                    {/* Product Summary */}
+                    <div style={{
+                        background: 'rgba(255,255,255,0.05)',
+                        padding: '1.5rem',
+                        borderRadius: '8px',
+                        marginBottom: '2rem'
+                    }}>
+                        <h3 style={{ marginBottom: '1rem', color: 'hsl(var(--color-accent))' }}>
+                            <FileText size={20} style={{ display: 'inline', marginRight: '0.5rem' }} />
+                            Teklif İçeriği
+                        </h3>
+
+                        {basket && basket.length > 0 ? (
+                            <div>
+                                <div style={{ marginBottom: '1rem', maxHeight: '150px', overflowY: 'auto' }}>
+                                    {basket.map((item, idx) => (
+                                        <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', padding: '0.5rem 0', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+                                            <span>{idx + 1}. {item.product.name} <span style={{ color: 'hsl(var(--color-accent))' }}>(x{item.quantity || 1})</span></span>
+                                            <span>${(item.calculation.suggested_price * (item.quantity || 1)).toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.2)', fontWeight: 'bold' }}>
+                                    <span>Toplam Tutar:</span>
+                                    <span style={{ color: 'hsl(var(--color-success))', fontSize: '1.2rem' }}>
+                                        ${totalPrice.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                                    </span>
+                                </div>
+                            </div>
+                        ) : (
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', fontSize: '0.9rem' }}>
+                                <div>
+                                    <span style={{ color: 'hsl(var(--color-text-muted))' }}>Ürün:</span>
+                                    <div style={{ fontWeight: 'bold' }}>{product?.name}</div>
+                                </div>
+                                <div>
+                                    <span style={{ color: 'hsl(var(--color-text-muted))' }}>Fiyat:</span>
+                                    <div style={{ fontWeight: 'bold', color: 'hsl(var(--color-success))' }}>
+                                        ${calculation?.suggested_price.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+
+                    <div style={{ display: 'grid', gap: '1.5rem' }}>
+                        {/* Company Selection */}
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                            <div>
+                                <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem', fontWeight: '500' }}>
+                                    <Building2 size={16} style={{ display: 'inline', marginRight: '0.5rem' }} />
+                                    Firma Seçin *
+                                </label>
+                                <select
+                                    required
+                                    value={formData.companyId}
+                                    onChange={(e) => setFormData({ ...formData, companyId: e.target.value, contactIndex: '' })}
+                                    style={{
+                                        width: '100%',
+                                        padding: '0.75rem',
+                                        background: 'hsl(var(--color-bg-secondary))',
+                                        border: '1px solid rgba(255,255,255,0.1)',
+                                        borderRadius: '8px',
+                                        color: 'white',
+                                        fontSize: '1rem',
+                                        cursor: 'pointer'
+                                    }}
+                                >
+                                    <option value="" style={{ background: 'hsl(var(--color-bg-secondary))', color: 'white' }}>Firma seçin...</option>
+                                    {companies.map(company => (
+                                        <option key={company.id} value={company.id} style={{ background: 'hsl(var(--color-bg-secondary))', color: 'white' }}>
+                                            {company.name}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+
+                            <div>
+                                <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem', fontWeight: '500' }}>
+                                    <User size={16} style={{ display: 'inline', marginRight: '0.5rem' }} />
+                                    Yetkili Kişi *
+                                </label>
+                                <select
+                                    required
+                                    disabled={!formData.companyId}
+                                    value={formData.contactIndex}
+                                    onChange={(e) => setFormData({ ...formData, contactIndex: e.target.value })}
+                                    style={{
+                                        width: '100%',
+                                        padding: '0.75rem',
+                                        background: 'hsl(var(--color-bg-secondary))',
+                                        border: '1px solid rgba(255,255,255,0.1)',
+                                        borderRadius: '8px',
+                                        color: 'white',
+                                        fontSize: '1rem',
+                                        cursor: formData.companyId ? 'pointer' : 'not-allowed',
+                                        opacity: formData.companyId ? 1 : 0.5
+                                    }}
+                                >
+                                    <option value="" style={{ background: 'hsl(var(--color-bg-secondary))', color: 'white' }}>Yetkili seçin...</option>
+                                    {companyContacts.map((contact, idx) => (
+                                        <option key={idx} value={idx} style={{ background: 'hsl(var(--color-bg-secondary))', color: 'white' }}>
+                                            {contact.name} {contact.title ? `(${contact.title})` : ''}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                        </div>
+
+                        {/* Payment Terms */}
+                        <div>
+                            <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem', fontWeight: '500' }}>
+                                Ödeme Şartları
+                            </label>
+                            <input
+                                type="text"
+                                value={formData.paymentTerms}
+                                onChange={(e) => setFormData({ ...formData, paymentTerms: e.target.value })}
+                                style={{
+                                    width: '100%',
+                                    padding: '0.75rem',
+                                    background: 'rgba(0,0,0,0.2)',
+                                    border: '1px solid rgba(255,255,255,0.1)',
+                                    borderRadius: '8px',
+                                    color: 'white',
+                                    fontSize: '1rem'
+                                }}
+                            />
+                        </div>
+
+                        {/* Validity */}
+                        <div>
+                            <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem', fontWeight: '500' }}>
+                                <Calendar size={16} style={{ display: 'inline', marginRight: '0.5rem' }} />
+                                Geçerlilik Süresi (Gün)
+                            </label>
+                            <input
+                                type="number"
+                                value={formData.validityDays}
+                                onChange={(e) => setFormData({ ...formData, validityDays: parseInt(e.target.value) })}
+                                style={{
+                                    width: '100%',
+                                    padding: '0.75rem',
+                                    background: 'rgba(0,0,0,0.2)',
+                                    border: '1px solid rgba(255,255,255,0.1)',
+                                    borderRadius: '8px',
+                                    color: 'white',
+                                    fontSize: '1rem'
+                                }}
+                            />
+                        </div>
+
+                        {/* Prepared By Section */}
+                        <div style={{
+                            background: 'rgba(255,255,255,0.05)',
+                            padding: '1.5rem',
+                            borderRadius: '8px',
+                            marginTop: '1rem'
+                        }}>
+                            <h4 style={{ marginBottom: '1rem', color: 'hsl(var(--color-accent))' }}>
+                                <User size={18} style={{ display: 'inline', marginRight: '0.5rem' }} />
+                                Teklifi Hazırlayan
+                            </h4>
+
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                                <div>
+                                    <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.85rem' }}>
+                                        Ad Soyad *
+                                    </label>
+                                    <input
+                                        type="text"
+                                        required
+                                        value={formData.preparedBy}
+                                        onChange={(e) => setFormData({ ...formData, preparedBy: e.target.value })}
+                                        style={{
+                                            width: '100%',
+                                            padding: '0.65rem',
+                                            background: 'rgba(0,0,0,0.2)',
+                                            border: '1px solid rgba(255,255,255,0.1)',
+                                            borderRadius: '8px',
+                                            color: 'white',
+                                            fontSize: '0.9rem'
+                                        }}
+                                    />
+                                </div>
+
+                                <div>
+                                    <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.85rem' }}>
+                                        Ünvan
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={formData.preparedByTitle}
+                                        onChange={(e) => setFormData({ ...formData, preparedByTitle: e.target.value })}
+                                        style={{
+                                            width: '100%',
+                                            padding: '0.65rem',
+                                            background: 'rgba(0,0,0,0.2)',
+                                            border: '1px solid rgba(255,255,255,0.1)',
+                                            borderRadius: '8px',
+                                            color: 'white',
+                                            fontSize: '0.9rem'
+                                        }}
+                                    />
+                                </div>
+
+                                <div>
+                                    <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.85rem' }}>
+                                        E-posta
+                                    </label>
+                                    <input
+                                        type="email"
+                                        value={formData.preparedByEmail}
+                                        onChange={(e) => setFormData({ ...formData, preparedByEmail: e.target.value })}
+                                        style={{
+                                            width: '100%',
+                                            padding: '0.65rem',
+                                            background: 'rgba(0,0,0,0.2)',
+                                            border: '1px solid rgba(255,255,255,0.1)',
+                                            borderRadius: '8px',
+                                            color: 'white',
+                                            fontSize: '0.9rem'
+                                        }}
+                                    />
+                                </div>
+
+                                <div>
+                                    <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.85rem' }}>
+                                        Telefon
+                                    </label>
+                                    <input
+                                        type="tel"
+                                        value={formData.preparedByPhone}
+                                        onChange={(e) => setFormData({ ...formData, preparedByPhone: e.target.value })}
+                                        style={{
+                                            width: '100%',
+                                            padding: '0.65rem',
+                                            background: 'rgba(0,0,0,0.2)',
+                                            border: '1px solid rgba(255,255,255,0.1)',
+                                            borderRadius: '8px',
+                                            color: 'white',
+                                            fontSize: '0.9rem'
+                                        }}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Notes */}
+                        <div>
+                            <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem', fontWeight: '500' }}>
+                                Notlar
+                            </label>
+                            <textarea
+                                value={formData.notes}
+                                onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+                                rows={3}
+                                style={{
+                                    width: '100%',
+                                    padding: '0.75rem',
+                                    background: 'rgba(0,0,0,0.2)',
+                                    border: '1px solid rgba(255,255,255,0.1)',
+                                    borderRadius: '8px',
+                                    color: 'white',
+                                    fontSize: '1rem',
+                                    resize: 'vertical'
+                                }}
+                            />
+                        </div>
+                    </div>
+
+                    <div style={{ display: 'flex', gap: '1rem', marginTop: '2rem' }}>
+                        <button type="submit" className="btn-primary" style={{ flex: 1 }}>
+                            Teklifi Tamamla ve Kaydet
+                        </button>
+                        <button
+                            type="button"
+                            onClick={onCancel || onClose}
+                            style={{
+                                flex: 1,
+                                padding: '0.75rem 1.5rem',
+                                background: 'rgba(255,255,255,0.1)',
+                                border: 'none',
+                                borderRadius: '8px',
+                                color: 'white',
+                                cursor: 'pointer',
+                                fontWeight: '600'
+                            }}
+                        >
+                            İptal
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    );
+}
