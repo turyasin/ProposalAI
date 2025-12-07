@@ -114,3 +114,72 @@ body {
   background-color: hsl(var(--color-warning-hover));
   transform: translateY(-1px);
 }
+
+/* Responsive Design - Mobile & Tablet */
+@media (max-width: 1024px) {
+  .app-container {
+    flex-direction: column !important;
+  }
+
+  .app-container>aside {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 1rem !important;
+    border-radius: 0 !important;
+  }
+
+  .app-container>main {
+    padding: 1rem !important;
+  }
+}
+
+@media (max-width: 768px) {
+
+  /* Show mobile menu toggle button */
+  .mobile-menu-toggle {
+    display: block !important;
+  }
+
+  /* Sidebar responsive behavior */
+  .app-container>aside {
+    transform: translateX(-100%) !important;
+    width: 80% !important;
+    max-width: 300px !important;
+    margin: 0 !important;
+  }
+
+  .app-container>aside[style*="translateX(0)"] {
+    transform: translateX(0) !important;
+  }
+
+  /* Stack columns vertically on mobile */
+  .costing-view-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+
+  /* Modal adjustments */
+  .glass-panel {
+    border-radius: var(--radius-md) !important;
+  }
+
+  /* Button text sizing */
+  .btn-primary,
+  .btn-warning {
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  /* Reduce heading sizes */
+  h1 {
+    font-size: 1.5rem !important;
+  }
+
+  h2 {
+    font-size: 1.25rem !important;
+  }
+
+  h3 {
+    font-size: 1.1rem !important;
+  }
+}

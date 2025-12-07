@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { LayoutDashboard, FileText, Settings, Calculator, ChevronRight, DollarSign, Activity, Building2, Archive, Upload, FileDown, Package, Bot, FileSignature, Plus, Trash2 } from 'lucide-react';
+import { LayoutDashboard, FileText, Settings, Calculator, ChevronRight, DollarSign, Activity, Building2, Archive, Upload, FileDown, Package, Bot, FileSignature, Plus, Trash2, Menu, X } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 import { products as productsData } from './products';
@@ -28,6 +28,7 @@ function App() {
   const [showProposalModal, setShowProposalModal] = useState(false);
   const [proposalBasket, setProposalBasket] = useState([]);
   const [editingProposal, setEditingProposal] = useState(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Load proposals and companies from localStorage on mount
   useEffect(() => {
@@ -227,25 +228,63 @@ function App() {
 
 
   return (
-    <div className="app-container" style={{ display: 'flex', height: '100vh', overflow: 'hidden' }}>
+    <div className="app-container" style={{ display: 'flex', height: '100vh', overflow: 'hidden', position: 'relative' }}>
+      {/* Mobile Menu Toggle Button */}
+      <button
+        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        style={{
+          position: 'fixed',
+          top: '1rem',
+          left: '1rem',
+          zIndex: 1001,
+          background: 'hsl(var(--color-accent))',
+          border: 'none',
+          borderRadius: '8px',
+          padding: '0.75rem',
+          cursor: 'pointer',
+          display: 'none',
+          color: 'white'
+        }}
+        className="mobile-menu-toggle"
+      >
+        {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+      </button>
+
       {/* Sidebar */}
-      <aside className="glass-panel" style={{ width: '280px', margin: '1rem', padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+      <aside
+        className="glass-panel"
+        style={{
+          width: '280px',
+          margin: '1rem',
+          padding: '1.5rem',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '2rem',
+          position: isMobileMenuOpen ? 'fixed' : 'relative',
+          top: isMobileMenuOpen ? 0 : 'auto',
+          left: isMobileMenuOpen ? 0 : 'auto',
+          height: isMobileMenuOpen ? '100vh' : 'auto',
+          zIndex: isMobileMenuOpen ? 1000 : 'auto',
+          transform: isMobileMenuOpen ? 'translateX(0)' : 'translateX(-100%)',
+          transition: 'transform 0.3s ease'
+        }}
+      >
         <div className="logo" style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'hsl(var(--color-accent))', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <FileSignature size={28} />
           Proposal<span style={{ color: 'white' }}>AI</span>
         </div>
 
         <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-          <NavItem icon={<LayoutDashboard size={20} />} label="Genel Bakış" active={activeTab === 'dashboard'} onClick={() => setActiveTab('dashboard')} />
-          <NavItem icon={<Package size={20} />} label="Ürünler" active={activeTab === 'products'} onClick={() => setActiveTab('products')} />
+          <NavItem icon={<LayoutDashboard size={20} />} label="Genel Bakış" active={activeTab === 'dashboard'} onClick={() => { setActiveTab('dashboard'); setIsMobileMenuOpen(false); }} />
+          <NavItem icon={<Package size={20} />} label="Ürünler" active={activeTab === 'products'} onClick={() => { setActiveTab('products'); setIsMobileMenuOpen(false); }} />
           <NavItem
             icon={<Calculator size={20} />}
             label="Maliyet/Teklif"
             active={activeTab === 'costing'}
-            onClick={() => setActiveTab('costing')}
-          />  <NavItem icon={<Building2 size={20} />} label="Firmalar" active={activeTab === 'companies'} onClick={() => setActiveTab('companies')} />
-          <NavItem icon={<Archive size={20} />} label="Teklif Arşivi" active={activeTab === 'archive'} onClick={() => setActiveTab('archive')} />
-          <NavItem icon={<Settings size={20} />} label="Parametreler" active={activeTab === 'settings'} onClick={() => setActiveTab('settings')} />
+            onClick={() => { setActiveTab('costing'); setIsMobileMenuOpen(false); }}
+          />  <NavItem icon={<Building2 size={20} />} label="Firmalar" active={activeTab === 'companies'} onClick={() => { setActiveTab('companies'); setIsMobileMenuOpen(false); }} />
+          <NavItem icon={<Archive size={20} />} label="Teklif Arşivi" active={activeTab === 'archive'} onClick={() => { setActiveTab('archive'); setIsMobileMenuOpen(false); }} />
+          <NavItem icon={<Settings size={20} />} label="Parametreler" active={activeTab === 'settings'} onClick={() => { setActiveTab('settings'); setIsMobileMenuOpen(false); }} />
         </nav>
       </aside>
 
@@ -792,7 +831,7 @@ function CostingView({ products, selectedProduct, onSelect, calculation, params,
   };
 
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '300px 1fr 300px', gap: '2rem', height: 'calc(100vh - 140px)' }}>
+    <div className="costing-view-grid" style={{ display: 'grid', gridTemplateColumns: '300px 1fr 300px', gap: '2rem', height: 'calc(100vh - 140px)' }}>
       {/* Left Panel: Product List */}
       <div className="glass-panel" style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
         <div style={{ padding: '1.5rem', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
