@@ -1,54 +1,23 @@
 services:
+  # Backend Endpoints
   - type: web
-    name: coremind-flowise
-    env: docker
-    dockerContext: .
-    dockerfilePath: ./flowise_deployment/Dockerfile
-    plan: free
-    envVars:
-      - key: PORT
-        value: 3000
-      - key: FLOWISE_USERNAME
-        value: admin
-      - key: FLOWISE_PASSWORD
-        value: password123
-      - key: NODE_OPTIONS
-        value: --max-old-space-size=460
-      - key: CORS_ORIGINS
-        value: https://turyasin.github.io
-      # Persistence Configuration (Supabase)
-      - key: DATABASE_TYPE
-        value: postgres
-      - key: DATABASE_PORT
-        value: 5432
-      - key: DATABASE_HOST
-        value: db.camyogwbseuxfrjxnjzw.supabase.co
-      - key: DATABASE_NAME
-        value: postgres
-      - key: DATABASE_USER
-        value: postgres
-      - key: DATABASE_PASSWORD
-        sync: false # Render Dashboard'dan girilecek
-      - key: APIKEY_PATH
-        value: /opt/flowise/.flowise
-      - key: SECRET
-        sync: false # Rastgele bir şifreleme anahtarı
-
-  - type: web
-    name: coremind-backend
+    name: proposal-ai-backend
     env: python
-    region: oregon
-    plan: free
-    buildCommand: pip install -r backend/requirements.txt
-    startCommand: uvicorn backend.main:app --host 0.0.0.0 --port $PORT
+    rootDir: proposal_app/backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: PYTHON_VERSION
-        value: 3.11.9
-      - key: SUPABASE_URL
-        sync: false
-      - key: SUPABASE_KEY
-        sync: false
-      - key: OPENAI_API_KEY
-        sync: false
-      - key: CORS_ORIGINS
-        value: https://turyasin.github.io
+        value: 3.10.0
+
+  # Frontend Static Site
+  - type: static
+    name: proposal-ai-frontend
+    env: static
+    rootDir: proposal_app/frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
