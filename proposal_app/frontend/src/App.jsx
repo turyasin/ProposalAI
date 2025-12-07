@@ -252,21 +252,14 @@ function App() {
 
       {/* Sidebar */}
       <aside
-        className="glass-panel"
+        className={`glass-panel ${isMobileMenuOpen ? 'mobile-menu-open' : ''}`}
         style={{
           width: '280px',
           margin: '1rem',
           padding: '1.5rem',
           display: 'flex',
           flexDirection: 'column',
-          gap: '2rem',
-          position: isMobileMenuOpen ? 'fixed' : 'relative',
-          top: isMobileMenuOpen ? 0 : 'auto',
-          left: isMobileMenuOpen ? 0 : 'auto',
-          height: isMobileMenuOpen ? '100vh' : 'auto',
-          zIndex: isMobileMenuOpen ? 1000 : 'auto',
-          transform: isMobileMenuOpen ? 'translateX(0)' : 'translateX(-100%)',
-          transition: 'transform 0.3s ease'
+          gap: '2rem'
         }}
       >
         <div className="logo" style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'hsl(var(--color-accent))', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
