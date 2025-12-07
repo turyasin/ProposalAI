@@ -1,5 +1,5 @@
 services:
-  # Backend Endpoints
+  # Backend API Service
   - type: web
     name: proposal-ai-backend
     env: python
@@ -10,13 +10,12 @@ services:
       - key: PYTHON_VERSION
         value: 3.10.0
 
+staticSites:
   # Frontend Static Site
-  - type: static
-    name: proposal-ai-frontend
-    env: static
+  - name: proposal-ai-frontend
     rootDir: proposal_app/frontend
     buildCommand: npm install && npm run build
-    staticPublishPath: dist
+    publishDir: dist
     routes:
       - type: rewrite
         source: /*
