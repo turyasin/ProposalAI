@@ -3,6 +3,7 @@ services:
   - type: web
     name: proposal-ai-backend
     env: python
+    plan: free # Force Free Plan
     rootDir: proposal_app/backend
     buildCommand: pip install -r requirements.txt
     startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
@@ -10,10 +11,11 @@ services:
       - key: PYTHON_VERSION
         value: 3.10.0
 
-  # Frontend Web Service (Serving Static Files)
+  # Frontend Web Service
   - type: web
     name: proposal-ai-frontend
     env: node
+    plan: free # Force Free Plan
     rootDir: proposal_app/frontend
     buildCommand: npm install && npm run build
     startCommand: npx serve -s dist -l $PORT
