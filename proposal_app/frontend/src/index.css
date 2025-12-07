@@ -146,7 +146,11 @@ body {
 
   /* Show mobile menu toggle button on tablet and mobile */
   .mobile-menu-toggle {
-    display: block !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    visibility: visible !important;
+    opacity: 1 !important;
   }
 
   /* Hide sidebar by default on tablet/mobile */
@@ -164,6 +168,8 @@ body {
     background: hsl(var(--color-bg-secondary));
     /* Ensure opaque background */
     border-right: 1px solid hsl(var(--glass-border));
+    visibility: visible !important;
+    /* Ensure it's not hidden by display:none */
   }
 
   /* Show sidebar when menu is open */
