@@ -117,37 +117,20 @@ body {
 
 /* Responsive Design - Mobile & Tablet */
 @media (max-width: 1024px) {
-  .app-container {
-    flex-direction: column !important;
-  }
 
-  .app-container>aside {
-    width: 100% !important;
-    margin: 0 !important;
-    padding: 1rem !important;
-    border-radius: 0 !important;
-  }
-
-  .app-container>main {
-    padding: 1rem !important;
-  }
-}
-
-@media (max-width: 768px) {
-
-  /* Show mobile menu toggle button */
+  /* Show mobile menu toggle button on tablet and mobile */
   .mobile-menu-toggle {
     display: block !important;
   }
 
-  /* Sidebar hidden by default on mobile */
+  /* Hide sidebar by default on tablet/mobile */
   .app-container>aside {
     position: fixed !important;
     top: 0 !important;
     left: 0 !important;
     height: 100vh !important;
     width: 80% !important;
-    max-width: 300px !important;
+    max-width: 320px !important;
     margin: 0 !important;
     z-index: 1000 !important;
     transform: translateX(-100%) !important;
@@ -159,10 +142,28 @@ body {
     transform: translateX(0) !important;
   }
 
+  .app-container {
+    flex-direction: column !important;
+  }
+
+  .app-container>main {
+    padding: 1rem !important;
+    margin-top: 0 !important;
+  }
+}
+
+@media (max-width: 768px) {
+
   /* Stack columns vertically on mobile */
   .costing-view-grid {
     grid-template-columns: 1fr !important;
     gap: 1rem !important;
+  }
+
+  /* Smaller sidebar on mobile */
+  .app-container>aside {
+    width: 75% !important;
+    max-width: 280px !important;
   }
 
   /* Modal adjustments */
