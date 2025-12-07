@@ -10,13 +10,13 @@ services:
       - key: PYTHON_VERSION
         value: 3.10.0
 
-staticSites:
-  # Frontend Static Site
-  - name: proposal-ai-frontend
+  # Frontend Web Service (Serving Static Files)
+  - type: web
+    name: proposal-ai-frontend
+    env: node
     rootDir: proposal_app/frontend
     buildCommand: npm install && npm run build
-    publishDir: dist
-    routes:
-      - type: rewrite
-        source: /*
-        destination: /index.html
+    startCommand: npx serve -s dist -l $PORT
+    envVars:
+      - key: NODE_VERSION
+        value: 18.17.0
