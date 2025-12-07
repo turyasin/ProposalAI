@@ -232,19 +232,6 @@ function App() {
       {/* Mobile Menu Toggle Button */}
       <button
         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        style={{
-          position: 'fixed',
-          top: '1rem',
-          left: '1rem',
-          zIndex: 1001,
-          background: 'hsl(var(--color-accent))',
-          border: 'none',
-          borderRadius: '8px',
-          padding: '0.75rem',
-          cursor: 'pointer',
-          display: 'none',
-          color: 'white'
-        }}
         className="mobile-menu-toggle"
       >
         {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -252,15 +239,7 @@ function App() {
 
       {/* Sidebar */}
       <aside
-        className={`glass-panel ${isMobileMenuOpen ? 'mobile-menu-open' : ''}`}
-        style={{
-          width: '280px',
-          margin: '1rem',
-          padding: '1.5rem',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '2rem'
-        }}
+        className={`glass-panel sidebar ${isMobileMenuOpen ? 'mobile-menu-open' : ''}`}
       >
         <div className="logo" style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'hsl(var(--color-accent))', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <FileSignature size={28} />

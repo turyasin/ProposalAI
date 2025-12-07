@@ -115,6 +115,32 @@ body {
   transform: translateY(-1px);
 }
 
+/* Sidebar Styles */
+.sidebar {
+  width: 280px;
+  margin: 1rem;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  transition: transform 0.3s ease;
+}
+
+.mobile-menu-toggle {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 1001;
+  background: hsl(var(--color-accent));
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem;
+  cursor: pointer;
+  display: none;
+  /* Hidden on desktop */
+  color: white;
+}
+
 /* Responsive Design - Mobile & Tablet */
 @media (max-width: 1024px) {
 
@@ -124,26 +150,30 @@ body {
   }
 
   /* Hide sidebar by default on tablet/mobile */
-  .app-container>aside {
+  .sidebar {
     position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    height: 100vh !important;
+    top: 0;
+    left: 0;
+    height: 100vh;
     width: 80% !important;
-    max-width: 320px !important;
+    max-width: 320px;
     margin: 0 !important;
-    z-index: 1000 !important;
-    transform: translateX(-100%) !important;
-    transition: transform 0.3s ease !important;
+    z-index: 1000;
+    transform: translateX(-100%);
+    /* Hidden */
+    background: hsl(var(--color-bg-secondary));
+    /* Ensure opaque background */
+    border-right: 1px solid hsl(var(--glass-border));
   }
 
   /* Show sidebar when menu is open */
-  .app-container>aside.mobile-menu-open {
-    transform: translateX(0) !important;
+  .sidebar.mobile-menu-open {
+    transform: translateX(0);
+    /* Visible */
   }
 
   .app-container {
-    flex-direction: column !important;
+    flex-direction: column;
   }
 
   .app-container>main {
