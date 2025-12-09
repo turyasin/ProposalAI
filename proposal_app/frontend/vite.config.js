@@ -4,7 +4,7 @@ import react from '@vitejs/plugin-react'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: '/proposal-app/',
+  base: '/ProposalAI/',
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
