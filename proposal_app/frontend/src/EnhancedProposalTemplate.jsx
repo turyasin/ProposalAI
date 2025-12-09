@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const EnhancedProposalTemplate = ({ proposal }) => {
+export const EnhancedProposalTemplate = ({ proposal, companyBranding }) => {
     const today = new Date(proposal.date).toLocaleDateString('tr-TR');
     const validUntil = new Date(new Date(proposal.date).getTime() + proposal.validityDays * 24 * 60 * 60 * 1000).toLocaleDateString('tr-TR');
 
@@ -21,14 +21,31 @@ export const EnhancedProposalTemplate = ({ proposal }) => {
     const Header = () => (
         <div style={{ borderBottom: '2px solid #000000', paddingBottom: '10px', marginBottom: '20px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
-                <div>
-                    <h1 style={{ margin: 0, color: '#000000', fontSize: '24px' }}>CoreMind Teknoloji A.Ş.</h1>
-                    <p style={{ margin: '5px 0 0 0', color: '#64748b', fontSize: '11px' }}>
-                        Teknopark Istanbul, Pendik | Istanbul, Turkiye
-                    </p>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                    {companyBranding?.company_logo && (
+                        <img
+                            src={companyBranding.company_logo}
+                            alt="Logo"
+                            style={{
+                                maxHeight: '50px',
+                                maxWidth: '120px',
+                                objectFit: 'contain'
+                            }}
+                        />
+                    )}
+                    <div>
+                        <h1 style={{ margin: 0, color: '#000000', fontSize: '24px' }}>
+                            {companyBranding?.company_name || 'Şirket Adı'}
+                        </h1>
+                        <p style={{ margin: '5px 0 0 0', color: '#64748b', fontSize: '11px' }}>
+                            {companyBranding?.company_address || 'Şirket Adresi'}
+                        </p>
+                    </div>
                 </div>
                 <div style={{ textAlign: 'right', fontSize: '11px', color: '#64748b' }}>
-                    info@coremind.com | www.coremind.com
+                    {companyBranding?.company_email && <div>{companyBranding.company_email}</div>}
+                    {companyBranding?.company_phone && <div>{companyBranding.company_phone}</div>}
+                    {companyBranding?.company_tax_number && <div>Vergi No: {companyBranding.company_tax_number}</div>}
                 </div>
             </div>
         </div>
@@ -43,7 +60,7 @@ export const EnhancedProposalTemplate = ({ proposal }) => {
             color: '#94a3b8',
             textAlign: 'center'
         }}>
-            CoreMind Teknoloji A.S. | www.coremind.com | Gizli ve Ticari Sir Icerir
+            {companyBranding?.company_name || 'Şirket Adı'} {companyBranding?.company_tax_number && `| Vergi No: ${companyBranding.company_tax_number}`} | Gizli ve Ticari Sır İçerir
         </div>
     );
 

@@ -5,7 +5,7 @@ import { EnhancedProposalTemplate } from './EnhancedProposalTemplate';
 import { Document, Packer, Paragraph, TextRun, Table, TableCell, TableRow, WidthType, AlignmentType, HeadingLevel, BorderStyle } from 'docx';
 import { saveAs } from 'file-saver';
 
-export async function exportProposalAsPDF(proposal) {
+export async function exportProposalAsPDF(proposal, companyBranding = {}) {
     try {
         // Create a temporary container
         const tempDiv = document.createElement('div');
@@ -15,7 +15,7 @@ export async function exportProposalAsPDF(proposal) {
 
         // Render the proposal template
         const root = ReactDOM.createRoot(tempDiv);
-        root.render(<EnhancedProposalTemplate proposal={proposal} />);
+        root.render(<EnhancedProposalTemplate proposal={proposal} companyBranding={companyBranding} />);
 
         // Wait for render
         await new Promise(resolve => setTimeout(resolve, 500)); // Increased timeout for better rendering
@@ -44,7 +44,7 @@ export async function exportProposalAsPDF(proposal) {
     }
 }
 
-export async function exportProposalAsWord(proposal) {
+export async function exportProposalAsWord(proposal, companyBranding = {}) {
     try {
         const today = new Date(proposal.date).toLocaleDateString('tr-TR');
         const validUntil = new Date(new Date(proposal.date).getTime() + proposal.validityDays * 24 * 60 * 60 * 1000).toLocaleDateString('tr-TR');
@@ -55,12 +55,12 @@ export async function exportProposalAsWord(proposal) {
                 children: [
                     // Header
                     new Paragraph({
-                        text: "CoreMind Teknoloji A.Ş.",
+                        text: companyBranding?.company_name || "Şirket Adı",
                         heading: HeadingLevel.HEADING_1,
                         alignment: AlignmentType.LEFT,
                     }),
                     new Paragraph({
-                        text: "Teknopark Istanbul, Pendik | Istanbul, Turkiye | info@coremind.com",
+                        text: `${companyBranding?.company_address || 'Şirket Adresi'} | ${companyBranding?.company_email || 'email@sirket.com'}${companyBranding?.company_tax_number ? ` | Vergi No: ${companyBranding.company_tax_number}` : ''}`,
                         spacing: { after: 400 }
                     }),
 
@@ -232,7 +232,7 @@ export async function exportProposalAsWord(proposal) {
 
                     // Footer
                     new Paragraph({
-                        text: "CoreMind Teknoloji A.S. | www.coremind.com | Gizli ve Ticari Sir Icerir",
+                        text: `${companyBranding?.company_name || 'Şirket Adı'}${companyBranding?.company_tax_number ? ` | Vergi No: ${companyBranding.company_tax_number}` : ''} | Gizli ve Ticari Sır İçerir`,
                         alignment: AlignmentType.CENTER,
                         spacing: { before: 600 }
                     })

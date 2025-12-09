@@ -19,7 +19,13 @@ function App() {
     labor_hourly_rate: 45.0,
     overhead_percentage: 50.0,
     profit_margin: 125.0,
-    currency_rate: 42.5
+    currency_rate: 42.5,
+    company_logo: '',
+    company_name: 'Şirket Adı',
+    company_address: 'Şirket Adresi',
+    company_phone: '',
+    company_email: '',
+    company_tax_number: ''
   });
   // Store both material cost and labor hours overrides
   const [productCustomizations, setProductCustomizations] = useState({});
@@ -42,6 +48,12 @@ function App() {
     const savedCompanies = localStorage.getItem('companies');
     if (savedCompanies) {
       setCompanies(JSON.parse(savedCompanies));
+    }
+
+    const savedParams = localStorage.getItem('costParams');
+    if (savedParams) {
+      // Merge saved params with defaults to ensure new fields (like tax_number) exist
+      setCostParams(prev => ({ ...prev, ...JSON.parse(savedParams) }));
     }
 
     const savedCustomizations = localStorage.getItem('productCustomizations');
@@ -315,11 +327,11 @@ function App() {
               try {
                 if (format === 'pdf') {
                   const { exportProposalAsPDF } = await import('./exportUtils.jsx');
-                  await exportProposalAsPDF(proposal);
+                  await exportProposalAsPDF(proposal, costParams);
                   alert(`PDF başarıyla oluşturuldu: ${proposal.proposalNo}`);
                 } else if (format === 'word') {
                   const { exportProposalAsWord } = await import('./exportUtils.jsx');
-                  await exportProposalAsWord(proposal);
+                  await exportProposalAsWord(proposal, costParams);
                   alert(`Word dosyası başarıyla oluşturuldu: ${proposal.proposalNo}`);
                 }
               } catch (error) {
@@ -794,95 +806,304 @@ function ProductsView({ products, onImport }) {
 }
 
 function SettingsView({ params, setParams }) {
+  const handleLogoUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const newParams = { ...params, company_logo: reader.result };
+        setParams(newParams);
+        localStorage.setItem('costParams', JSON.stringify(newParams));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleParamChange = (key, value) => {
+    const newParams = { ...params, [key]: value };
+    setParams(newParams);
+    localStorage.setItem('costParams', JSON.stringify(newParams));
+  };
+
   return (
-    <div className="glass-panel" style={{ padding: '2rem', maxWidth: '800px', margin: '0 auto' }}>
-      <h2 style={{ marginBottom: '2rem' }}>Varsayılan Maliyet Parametreleri</h2>
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(450px, 1fr))', gap: '2rem', maxWidth: '1400px', margin: '0 auto' }}>
+      {/* Company Branding Section */}
+      <div className="glass-panel" style={{ padding: '2rem' }}>
+        <h2 style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <Building2 size={24} style={{ color: 'hsl(var(--color-accent))' }} />
+          Firma Bilgileri
+        </h2>
 
-      <div style={{ display: 'grid', gap: '2rem' }}>
-        <div>
-          <label style={{ display: 'block', fontSize: '0.9rem', marginBottom: '0.5rem', color: 'hsl(var(--color-text-secondary))' }}>
-            İşçilik Saatlik Ücreti ($/Saat)
-          </label>
-          <input
-            type="number"
-            value={params.labor_hourly_rate}
-            onChange={(e) => setParams({ ...params, labor_hourly_rate: parseFloat(e.target.value) })}
-            style={{
-              width: '100%',
-              background: 'rgba(0,0,0,0.2)',
-              border: '1px solid rgba(255,255,255,0.1)',
-              padding: '0.75rem',
-              borderRadius: '8px',
-              color: 'white',
-              fontSize: '1rem'
-            }}
-          />
+        <div style={{ display: 'grid', gap: '1.5rem' }}>
+          {/* Logo Upload */}
+          <div>
+            <label style={{ display: 'block', fontSize: '0.9rem', marginBottom: '0.5rem', color: 'hsl(var(--color-text-secondary))', fontWeight: '500' }}>
+              Firma Logosu
+            </label>
+            <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexDirection: 'column' }}>
+              {params.company_logo && (
+                <img
+                  src={params.company_logo}
+                  alt="Logo"
+                  style={{
+                    maxWidth: '150px',
+                    maxHeight: '80px',
+                    objectFit: 'contain',
+                    background: 'white',
+                    padding: '0.5rem',
+                    borderRadius: '8px'
+                  }}
+                />
+              )}
+              <div style={{ width: '100%' }}>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleLogoUpload}
+                  style={{ display: 'none' }}
+                  id="logo-upload"
+                />
+                <label
+                  htmlFor="logo-upload"
+                  style={{
+                    display: 'inline-block',
+                    padding: '0.75rem 1.5rem',
+                    background: 'hsl(var(--color-accent))',
+                    color: 'black',
+                    borderRadius: '8px',
+                    cursor: 'pointer',
+                    fontWeight: 'bold',
+                    width: '100%',
+                    textAlign: 'center'
+                  }}
+                >
+                  {params.company_logo ? 'Logo Değiştir' : 'Logo Yükle'}
+                </label>
+                {params.company_logo && (
+                  <button
+                    onClick={() => handleParamChange('company_logo', '')}
+                    style={{
+                      marginTop: '0.5rem',
+                      padding: '0.75rem 1.5rem',
+                      background: 'rgba(239, 68, 68, 0.2)',
+                      color: '#ef4444',
+                      border: 'none',
+                      borderRadius: '8px',
+                      cursor: 'pointer',
+                      fontWeight: 'bold',
+                      width: '100%'
+                    }}
+                  >
+                    Logoyu Kaldır
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Company Name */}
+          <div>
+            <label style={{ display: 'block', fontSize: '0.9rem', marginBottom: '0.5rem', color: 'hsl(var(--color-text-secondary))', fontWeight: '500' }}>
+              Firma Adı
+            </label>
+            <input
+              type="text"
+              value={params.company_name}
+              onChange={(e) => handleParamChange('company_name', e.target.value)}
+              style={{
+                width: '100%',
+                background: 'rgba(0,0,0,0.2)',
+                border: '1px solid rgba(255,255,255,0.1)',
+                padding: '0.75rem',
+                borderRadius: '8px',
+                color: 'white',
+                fontSize: '1rem'
+              }}
+            />
+          </div>
+
+          {/* Company Address */}
+          <div>
+            <label style={{ display: 'block', fontSize: '0.9rem', marginBottom: '0.5rem', color: 'hsl(var(--color-text-secondary))', fontWeight: '500' }}>
+              Firma Adresi
+            </label>
+            <textarea
+              value={params.company_address}
+              onChange={(e) => handleParamChange('company_address', e.target.value)}
+              rows={3}
+              style={{
+                width: '100%',
+                background: 'rgba(0,0,0,0.2)',
+                border: '1px solid rgba(255,255,255,0.1)',
+                padding: '0.75rem',
+                borderRadius: '8px',
+                color: 'white',
+                fontSize: '1rem',
+                resize: 'vertical'
+              }}
+            />
+          </div>
+
+          {/* Contact Info Grid */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+            <div>
+              <label style={{ display: 'block', fontSize: '0.9rem', marginBottom: '0.5rem', color: 'hsl(var(--color-text-secondary))', fontWeight: '500' }}>
+                Telefon
+              </label>
+              <input
+                type="tel"
+                value={params.company_phone}
+                onChange={(e) => handleParamChange('company_phone', e.target.value)}
+                style={{
+                  width: '100%',
+                  background: 'rgba(0,0,0,0.2)',
+                  border: '1px solid rgba(255,255,255,0.1)',
+                  padding: '0.75rem',
+                  borderRadius: '8px',
+                  color: 'white',
+                  fontSize: '1rem'
+                }}
+              />
+            </div>
+
+            <div>
+              <label style={{ display: 'block', fontSize: '0.9rem', marginBottom: '0.5rem', color: 'hsl(var(--color-text-secondary))', fontWeight: '500' }}>
+                E-posta
+              </label>
+              <input
+                type="email"
+                value={params.company_email}
+                onChange={(e) => handleParamChange('company_email', e.target.value)}
+                style={{
+                  width: '100%',
+                  background: 'rgba(0,0,0,0.2)',
+                  border: '1px solid rgba(255,255,255,0.1)',
+                  padding: '0.75rem',
+                  borderRadius: '8px',
+                  color: 'white',
+                  fontSize: '1rem'
+                }}
+              />
+            </div>
+          </div>
+
+          {/* Tax Number */}
+          <div>
+            <label style={{ display: 'block', fontSize: '0.9rem', marginBottom: '0.5rem', color: 'hsl(var(--color-text-secondary))', fontWeight: '500' }}>
+              Vergi Numarası
+            </label>
+            <input
+              type="text"
+              value={params.company_tax_number}
+              onChange={(e) => handleParamChange('company_tax_number', e.target.value)}
+              placeholder="1234567890"
+              style={{
+                width: '100%',
+                background: 'rgba(0,0,0,0.2)',
+                border: '1px solid rgba(255,255,255,0.1)',
+                padding: '0.75rem',
+                borderRadius: '8px',
+                color: 'white',
+                fontSize: '1rem'
+              }}
+            />
+          </div>
         </div>
+      </div>
 
-        <div>
-          <label style={{ display: 'block', fontSize: '0.9rem', marginBottom: '0.5rem', color: 'hsl(var(--color-text-secondary))' }}>
-            Genel Gider Oranı (%)
-          </label>
-          <input
-            type="number"
-            value={params.overhead_percentage}
-            onChange={(e) => setParams({ ...params, overhead_percentage: parseFloat(e.target.value) })}
-            style={{
-              width: '100%',
-              background: 'rgba(0,0,0,0.2)',
-              border: '1px solid rgba(255,255,255,0.1)',
-              padding: '0.75rem',
-              borderRadius: '8px',
-              color: 'white',
-              fontSize: '1rem'
-            }}
-          />
-        </div>
+      {/* Cost Parameters Section */}
+      <div className="glass-panel" style={{ padding: '2rem' }}>
+        <h2 style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <Calculator size={24} style={{ color: 'hsl(var(--color-accent))' }} />
+          Maliyet Parametreleri
+        </h2>
 
-        <div>
-          <label style={{ display: 'block', fontSize: '0.9rem', marginBottom: '0.5rem', color: 'hsl(var(--color-text-secondary))' }}>
-            Kar Marjı (%)
-          </label>
-          <input
-            type="number"
-            value={params.profit_margin}
-            onChange={(e) => setParams({ ...params, profit_margin: parseFloat(e.target.value) })}
-            style={{
-              width: '100%',
-              background: 'rgba(0,0,0,0.2)',
-              border: '1px solid rgba(255,255,255,0.1)',
-              padding: '0.75rem',
-              borderRadius: '8px',
-              color: 'white',
-              fontSize: '1rem'
-            }}
-          />
-        </div>
+        <div style={{ display: 'grid', gap: '1.5rem' }}>
+          <div>
+            <label style={{ display: 'block', fontSize: '0.9rem', marginBottom: '0.5rem', color: 'hsl(var(--color-text-secondary))' }}>
+              İşçilik Saatlik Ücreti ($/Saat)
+            </label>
+            <input
+              type="number"
+              value={params.labor_hourly_rate}
+              onChange={(e) => handleParamChange('labor_hourly_rate', parseFloat(e.target.value))}
+              style={{
+                width: '100%',
+                background: 'rgba(0,0,0,0.2)',
+                border: '1px solid rgba(255,255,255,0.1)',
+                padding: '0.75rem',
+                borderRadius: '8px',
+                color: 'white',
+                fontSize: '1rem'
+              }}
+            />
+          </div>
 
-        <div>
-          <label style={{ display: 'block', fontSize: '0.9rem', marginBottom: '0.5rem', color: 'hsl(var(--color-text-secondary))' }}>
-            Dolar Kuru (TL)
-          </label>
-          <input
-            type="number"
-            value={params.currency_rate}
-            onChange={(e) => setParams({ ...params, currency_rate: parseFloat(e.target.value) })}
-            style={{
-              width: '100%',
-              background: 'rgba(0,0,0,0.2)',
-              border: '1px solid rgba(255,255,255,0.1)',
-              padding: '0.75rem',
-              borderRadius: '8px',
-              color: 'white',
-              fontSize: '1rem'
-            }}
-          />
-        </div>
+          <div>
+            <label style={{ display: 'block', fontSize: '0.9rem', marginBottom: '0.5rem', color: 'hsl(var(--color-text-secondary))' }}>
+              Genel Gider Oranı (%)
+            </label>
+            <input
+              type="number"
+              value={params.overhead_percentage}
+              onChange={(e) => handleParamChange('overhead_percentage', parseFloat(e.target.value))}
+              style={{
+                width: '100%',
+                background: 'rgba(0,0,0,0.2)',
+                border: '1px solid rgba(255,255,255,0.1)',
+                padding: '0.75rem',
+                borderRadius: '8px',
+                color: 'white',
+                fontSize: '1rem'
+              }}
+            />
+          </div>
 
-        <div style={{ marginTop: '1rem', padding: '1rem', background: 'rgba(255,255,255,0.05)', borderRadius: '8px' }}>
-          <p style={{ fontSize: '0.85rem', color: 'hsl(var(--color-text-muted))' }}>
-            💡 Bu parametreler tüm maliyet hesaplamalarında kullanılır. Değişiklikler anında uygulanır.
-          </p>
+          <div>
+            <label style={{ display: 'block', fontSize: '0.9rem', marginBottom: '0.5rem', color: 'hsl(var(--color-text-secondary))' }}>
+              Kar Marjı (%)
+            </label>
+            <input
+              type="number"
+              value={params.profit_margin}
+              onChange={(e) => handleParamChange('profit_margin', parseFloat(e.target.value))}
+              style={{
+                width: '100%',
+                background: 'rgba(0,0,0,0.2)',
+                border: '1px solid rgba(255,255,255,0.1)',
+                padding: '0.75rem',
+                borderRadius: '8px',
+                color: 'white',
+                fontSize: '1rem'
+              }}
+            />
+          </div>
+
+          <div>
+            <label style={{ display: 'block', fontSize: '0.9rem', marginBottom: '0.5rem', color: 'hsl(var(--color-text-secondary))' }}>
+              Dolar Kuru (TL)
+            </label>
+            <input
+              type="number"
+              value={params.currency_rate}
+              onChange={(e) => handleParamChange('currency_rate', parseFloat(e.target.value))}
+              style={{
+                width: '100%',
+                background: 'rgba(0,0,0,0.2)',
+                border: '1px solid rgba(255,255,255,0.1)',
+                padding: '0.75rem',
+                borderRadius: '8px',
+                color: 'white',
+                fontSize: '1rem'
+              }}
+            />
+          </div>
+
+          <div style={{ marginTop: '1rem', padding: '1rem', background: 'rgba(255,255,255,0.05)', borderRadius: '8px' }}>
+            <p style={{ fontSize: '0.85rem', color: 'hsl(var(--color-text-muted))' }}>
+              💡 Bu parametreler tüm maliyet hesaplamalarında kullanılır. Değişiklikler otomatik kaydedilir.
+            </p>
+          </div>
         </div>
       </div>
     </div>
