@@ -19,6 +19,7 @@ concurrency:
 
 jobs:
   build:
+    if: github.repository == 'turyasin/ProposalAI'
     runs-on: ubuntu-latest
     defaults:
       run:
