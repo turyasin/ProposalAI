@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { LayoutDashboard, FileText, Settings, Calculator, ChevronRight, DollarSign, Activity, Building2, Archive, Upload, FileDown, Package, Bot, FileSignature, Plus, Trash2, Menu, X } from 'lucide-react';
+import { LayoutDashboard, FileText, Settings, Calculator, ChevronRight, DollarSign, Activity, Building2, Archive, Upload, FileDown, Package, Bot, FileSignature, Plus, Trash2, Menu, X, Filter } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 import { products as productsData } from './products';
 import { CompaniesView } from './CompaniesView';
 import { ArchiveView } from './ArchiveView';
 import { ProposalDraftModal } from './ProposalDraftModal';
+import { AIAssistantView } from './AIAssistantView';
 import html2pdf from 'html2pdf.js';
 import ReactDOM from 'react-dom/client';
 import { ProposalTemplate } from './ProposalTemplate';
@@ -29,6 +30,7 @@ function App() {
   const [proposalBasket, setProposalBasket] = useState([]);
   const [editingProposal, setEditingProposal] = useState(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [customProposalNo, setCustomProposalNo] = useState('');
 
   // Load proposals and companies from localStorage on mount
   useEffect(() => {
@@ -256,6 +258,7 @@ function App() {
             onClick={() => { setActiveTab('costing'); setIsMobileMenuOpen(false); }}
           />  <NavItem icon={<Building2 size={20} />} label="Firmalar" active={activeTab === 'companies'} onClick={() => { setActiveTab('companies'); setIsMobileMenuOpen(false); }} />
           <NavItem icon={<Archive size={20} />} label="Teklif Arşivi" active={activeTab === 'archive'} onClick={() => { setActiveTab('archive'); setIsMobileMenuOpen(false); }} />
+          <NavItem icon={<Bot size={20} />} label="AI Asistan" active={activeTab === 'ai-assistant'} onClick={() => { setActiveTab('ai-assistant'); setIsMobileMenuOpen(false); }} />
           <NavItem icon={<Settings size={20} />} label="Parametreler" active={activeTab === 'settings'} onClick={() => { setActiveTab('settings'); setIsMobileMenuOpen(false); }} />
         </nav>
       </aside>
@@ -326,6 +329,7 @@ function App() {
             }}
           />
         )}
+        {activeTab === 'ai-assistant' && <AIAssistantView />}
         {activeTab === 'settings' && (
           <SettingsView
             params={costParams}
@@ -350,6 +354,7 @@ function App() {
         onSave={saveProposal}
         basket={proposalBasket}
         initialData={editingProposal}
+        productCustomizations={productCustomizations}
       />
     </div >
   );
@@ -358,42 +363,126 @@ function App() {
 // --- Sub-Components ---
 
 function DashboardView({ products, proposals }) {
-  // Calculate Statistics
-  const totalProposals = proposals ? proposals.length : 0;
+  const [filterProduct, setFilterProduct] = useState('');
+  const [filterPreparer, setFilterPreparer] = useState('');
 
-  const totalAmount = proposals ? proposals.reduce((sum, p) => {
+  // Calculate Statistics
+  const filteredProposals = proposals ? proposals.filter(p => {
+    const matchesProduct = !filterProduct ||
+      (p.items && p.items.some(item => item.product.id === filterProduct)) ||
+      (!p.items && p.product?.id === filterProduct);
+    const matchesPreparer = !filterPreparer || p.preparer === filterPreparer || p.preparedBy?.name === filterPreparer;
+    return matchesProduct && matchesPreparer;
+  }) : [];
+
+  const totalProposals = filteredProposals.length;
+
+  const totalAmount = filteredProposals.reduce((sum, p) => {
     return sum + (p.totalPrice || p.calculation?.suggested_price || 0);
-  }, 0) : 0;
+  }, 0);
+
+  // Extract unique preparers
+  const preparers = [...new Set(proposals?.map(p => p.preparer || p.preparedBy?.name).filter(Boolean) || [])];
 
   // Calculate sales per product
   const productStats = {};
-  if (proposals) {
-    proposals.forEach(p => {
-      // Handle both multi-item and single-item proposals
-      const items = p.items && p.items.length > 0
-        ? p.items
-        : [{ product: p.product, calculation: p.calculation, quantity: 1 }];
+  filteredProposals.forEach(p => {
+    // Handle both multi-item and single-item proposals
+    const items = p.items && p.items.length > 0
+      ? p.items
+      : [{ product: p.product, calculation: p.calculation, quantity: 1 }];
 
-      items.forEach(item => {
-        const pId = item.product.id;
-        if (!productStats[pId]) {
-          productStats[pId] = {
-            name: item.product.name,
-            count: 0,
-            revenue: 0
-          };
-        }
-        productStats[pId].count += (item.quantity || 1);
-        productStats[pId].revenue += (item.calculation.suggested_price * (item.quantity || 1));
-      });
+    items.forEach(item => {
+      const pId = item.product.id;
+      if (!productStats[pId]) {
+        productStats[pId] = {
+          name: item.product.name,
+          count: 0,
+          revenue: 0
+        };
+      }
+      productStats[pId].count += (item.quantity || 1);
+      productStats[pId].revenue += (item.calculation.suggested_price * (item.quantity || 1));
     });
-  }
+  });
+
+  // Calculate sales per preparer
+  const preparerStats = {};
+  filteredProposals.forEach(p => {
+    const preparer = p.preparer || p.preparedBy?.name || 'Bilinmeyen';
+    if (!preparerStats[preparer]) {
+      preparerStats[preparer] = {
+        name: preparer,
+        count: 0,
+        revenue: 0
+      };
+    }
+    preparerStats[preparer].count += 1;
+    preparerStats[preparer].revenue += (p.totalPrice || p.calculation?.suggested_price || 0);
+  });
 
   // Convert to array and sort by count (descending)
   const sortedProductStats = Object.values(productStats).sort((a, b) => b.count - a.count);
+  const sortedPreparerStats = Object.values(preparerStats).sort((a, b) => b.revenue - a.revenue);
 
   return (
     <div style={{ display: 'grid', gap: '1.5rem' }}>
+      {/* Filters */}
+      <div className="glass-panel" style={{ padding: '1.5rem' }}>
+        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'center' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'hsl(var(--color-text-muted))' }}>
+            <Filter size={20} />
+            <span style={{ fontSize: '0.9rem', fontWeight: 'bold' }}>Filtrele:</span>
+          </div>
+
+          <select
+            value={filterProduct}
+            onChange={(e) => setFilterProduct(e.target.value)}
+            style={{
+              padding: '0.5rem',
+              background: 'rgba(255,255,255,0.05)',
+              border: '1px solid rgba(255,255,255,0.1)',
+              borderRadius: '6px',
+              color: 'white',
+              minWidth: '200px'
+            }}
+          >
+            <option value="">Tüm Ürünler</option>
+            {products.map(p => (
+              <option key={p.id} value={p.id}>{p.name}</option>
+            ))}
+          </select>
+
+          <select
+            value={filterPreparer}
+            onChange={(e) => setFilterPreparer(e.target.value)}
+            style={{
+              padding: '0.5rem',
+              background: 'rgba(255,255,255,0.05)',
+              border: '1px solid rgba(255,255,255,0.1)',
+              borderRadius: '6px',
+              color: 'white',
+              minWidth: '200px'
+            }}
+          >
+            <option value="">Tüm Teklif Verenler</option>
+            {preparers.map((p, idx) => (
+              <option key={idx} value={p}>{p}</option>
+            ))}
+          </select>
+
+          {(filterProduct || filterPreparer) && (
+            <button
+              onClick={() => { setFilterProduct(''); setFilterPreparer(''); }}
+              style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}
+            >
+              <Trash2 size={14} /> Temizle
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* Stats Cards */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem' }}>
         <StatCard title="Toplam Teklif Sayısı" value={totalProposals} trend="Adet" />
         <StatCard
@@ -403,6 +492,7 @@ function DashboardView({ products, proposals }) {
         />
       </div>
 
+      {/* Product Stats */}
       <div className="glass-panel" style={{ padding: '2rem' }}>
         <h3 style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <span>📊</span> Ürün Bazlı Teklif Analizi
@@ -436,6 +526,42 @@ function DashboardView({ products, proposals }) {
           )}
         </div>
       </div>
+
+      {/* Preparer Stats */}
+      <div className="glass-panel" style={{ padding: '2rem' }}>
+        <h3 style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <span>👤</span> Teklif Veren Bazlı Analiz
+        </h3>
+        <div style={{ display: 'grid', gap: '1rem' }}>
+          {sortedPreparerStats.length > 0 ? sortedPreparerStats.map((stat, index) => (
+            <div key={index} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1.25rem', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.05)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                <div style={{
+                  width: '32px', height: '32px', borderRadius: '8px',
+                  background: index === 0 ? 'rgba(34, 197, 94, 0.2)' : 'rgba(255,255,255,0.1)',
+                  color: index === 0 ? '#22c55e' : 'white',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold',
+                  border: index === 0 ? '1px solid #22c55e' : 'none'
+                }}>
+                  {index + 1}
+                </div>
+                <div>
+                  <div style={{ fontWeight: '600', fontSize: '1rem' }}>{stat.name}</div>
+                  <div style={{ fontSize: '0.8rem', color: 'hsl(var(--color-text-muted))' }}>Toplam Teklif Performansı</div>
+                </div>
+              </div>
+              <div style={{ textAlign: 'right' }}>
+                <div style={{ fontWeight: 'bold', fontSize: '1.25rem', color: '#22c55e' }}>{stat.count} <span style={{ fontSize: '0.9rem', fontWeight: 'normal', color: 'hsl(var(--color-text-secondary))' }}>Teklif</span></div>
+                <div style={{ fontSize: '0.9rem', color: 'hsl(var(--color-success))', fontWeight: '500' }}>${stat.revenue.toLocaleString('en-US', { maximumFractionDigits: 0 })}</div>
+              </div>
+            </div>
+          )) : (
+            <div style={{ textAlign: 'center', color: 'hsl(var(--color-text-muted))', padding: '3rem', background: 'rgba(255,255,255,0.02)', borderRadius: '12px', border: '1px dashed rgba(255,255,255,0.1)' }}>
+              Henüz teklif verisi bulunmuyor.
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
@@ -446,18 +572,7 @@ function ProductsView({ products, onImport }) {
   const [newProduct, setNewProduct] = useState({
     id: '',
     name: '',
-    specs: {
-      sections: '',
-      diameter_mm: '',
-      payload_capacity_kg: '',
-      voltage: '',
-      dimensions_raw: '',
-      features: ''
-    },
-    base_cost_factors: {
-      labor_hours: '',
-      material_cost: ''
-    }
+    notes: ''
   });
 
   const downloadTemplate = () => {
@@ -525,17 +640,18 @@ function ProductsView({ products, onImport }) {
     const productToAdd = {
       id: newProduct.id,
       name: newProduct.name,
+      notes: newProduct.notes,
       specs: {
-        sections: parseInt(newProduct.specs.sections) || 0,
-        diameter_mm: parseInt(newProduct.specs.diameter_mm) || 0,
-        payload_capacity_kg: parseInt(newProduct.specs.payload_capacity_kg) || 0,
-        voltage: newProduct.specs.voltage,
-        dimensions_raw: newProduct.specs.dimensions_raw,
-        features: newProduct.specs.features.split(',').map(f => f.trim()).filter(f => f)
+        sections: 0,
+        diameter_mm: 0,
+        payload_capacity_kg: 0,
+        voltage: '',
+        dimensions_raw: '',
+        features: []
       },
       base_cost_factors: {
-        labor_hours: parseFloat(newProduct.base_cost_factors.labor_hours) || 0,
-        material_cost: parseFloat(newProduct.base_cost_factors.material_cost) || 0
+        labor_hours: 0,
+        material_cost: 0
       }
     };
     onImport([productToAdd]);
@@ -543,8 +659,7 @@ function ProductsView({ products, onImport }) {
     setNewProduct({
       id: '',
       name: '',
-      specs: { sections: '', diameter_mm: '', payload_capacity_kg: '', voltage: '', dimensions_raw: '', features: '' },
-      base_cost_factors: { labor_hours: '', material_cost: '' }
+      notes: ''
     });
   };
 
@@ -590,41 +705,38 @@ function ProductsView({ products, onImport }) {
         <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.8)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }}>
           <div className="glass-panel" style={{ padding: '2rem', width: '600px', maxHeight: '90vh', overflowY: 'auto', background: '#1e293b' }}>
             <h3 style={{ marginBottom: '1.5rem', color: 'hsl(var(--color-accent))' }}>Yeni Ürün Ekle</h3>
-            <form onSubmit={handleAddProduct} style={{ display: 'grid', gap: '1rem' }}>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                <ParamInput label="Ürün Kodu *" value={newProduct.id} onChange={(val) => setNewProduct({ ...newProduct, id: val })} type="text" />
-                <ParamInput label="Ürün Adı *" value={newProduct.name} onChange={(val) => setNewProduct({ ...newProduct, name: val })} type="text" />
-              </div>
+            <form onSubmit={handleAddProduct} style={{ display: 'grid', gap: '1.5rem' }}>
+              <ParamInput label="Ürün Kodu *" value={newProduct.id} onChange={(val) => setNewProduct({ ...newProduct, id: val })} type="text" />
+              <ParamInput label="Ürün Adı *" value={newProduct.name} onChange={(val) => setNewProduct({ ...newProduct, name: val })} type="text" />
 
-              <h4 style={{ margin: '0.5rem 0 0', color: 'hsl(var(--color-text-secondary))', fontSize: '0.9rem' }}>Teknik Özellikler</h4>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                <ParamInput label="Kesit Sayısı" value={newProduct.specs.sections} onChange={(val) => setNewProduct({ ...newProduct, specs: { ...newProduct.specs, sections: val } })} />
-                <ParamInput label="Çap (mm)" value={newProduct.specs.diameter_mm} onChange={(val) => setNewProduct({ ...newProduct, specs: { ...newProduct.specs, diameter_mm: val } })} />
-                <ParamInput label="Yük Kapasitesi (kg)" value={newProduct.specs.payload_capacity_kg} onChange={(val) => setNewProduct({ ...newProduct, specs: { ...newProduct.specs, payload_capacity_kg: val } })} />
-                <ParamInput label="Voltaj" value={newProduct.specs.voltage} onChange={(val) => setNewProduct({ ...newProduct, specs: { ...newProduct.specs, voltage: val } })} type="text" />
-                <ParamInput label="Boyutlar" value={newProduct.specs.dimensions_raw} onChange={(val) => setNewProduct({ ...newProduct, specs: { ...newProduct.specs, dimensions_raw: val } })} type="text" />
-              </div>
-
-              <h4 style={{ margin: '0.5rem 0 0', color: 'hsl(var(--color-text-secondary))', fontSize: '0.9rem' }}>Maliyet Faktörleri</h4>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                <ParamInput label="İşçilik Saati" value={newProduct.base_cost_factors.labor_hours} onChange={(val) => setNewProduct({ ...newProduct, base_cost_factors: { ...newProduct.base_cost_factors, labor_hours: val } })} />
-                <ParamInput label="Malzeme Maliyeti ($)" value={newProduct.base_cost_factors.material_cost} onChange={(val) => setNewProduct({ ...newProduct, base_cost_factors: { ...newProduct.base_cost_factors, material_cost: val } })} />
-              </div>
-
-              <div style={{ marginTop: '0.5rem' }}>
-                <label style={{ display: 'block', fontSize: '0.8rem', marginBottom: '0.4rem', color: 'hsl(var(--color-text-secondary))' }}>Özellikler (Virgülle ayırın)</label>
-                <input
-                  type="text"
-                  value={newProduct.specs.features}
-                  onChange={(e) => setNewProduct({ ...newProduct, specs: { ...newProduct.specs, features: e.target.value } })}
-                  style={{ width: '100%', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', padding: '0.5rem', borderRadius: '4px', color: 'white' }}
-                  placeholder="Örn: Acil durum katlama, Harici kontrol"
+              <div>
+                <label style={{ display: 'block', fontSize: '0.9rem', marginBottom: '0.5rem', color: 'hsl(var(--color-text-secondary))', fontWeight: '500' }}>
+                  Notlar
+                </label>
+                <textarea
+                  value={newProduct.notes}
+                  onChange={(e) => setNewProduct({ ...newProduct, notes: e.target.value })}
+                  rows={4}
+                  style={{
+                    width: '100%',
+                    background: 'rgba(0,0,0,0.2)',
+                    border: '1px solid rgba(255,255,255,0.1)',
+                    padding: '0.75rem',
+                    borderRadius: '8px',
+                    color: 'white',
+                    fontSize: '0.95rem',
+                    resize: 'vertical'
+                  }}
+                  placeholder="Ürüne ait özel notlar, özellikler veya açıklamalar..."
                 />
+                <p style={{ fontSize: '0.75rem', color: 'hsl(var(--color-text-muted))', marginTop: '0.5rem' }}>
+                  💡 Bu ürünün default ürünlerden farklı özellikleri varsa buraya not edebilirsiniz.
+                </p>
               </div>
 
               <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem', justifyContent: 'flex-end' }}>
-                <button type="button" onClick={() => setShowAddModal(false)} className="btn-secondary" style={{ padding: '0.5rem 1rem', borderRadius: '6px', cursor: 'pointer', background: 'transparent', border: '1px solid rgba(255,255,255,0.2)', color: 'white' }}>İptal</button>
-                <button type="submit" className="btn-primary" style={{ padding: '0.5rem 1rem', borderRadius: '6px', cursor: 'pointer', background: 'hsl(var(--color-accent))', color: 'black', fontWeight: 'bold' }}>Ekle</button>
+                <button type="button" onClick={() => setShowAddModal(false)} className="btn-secondary" style={{ padding: '0.75rem 1.5rem', borderRadius: '8px', cursor: 'pointer', background: 'transparent', border: '1px solid rgba(255,255,255,0.2)', color: 'white' }}>İptal</button>
+                <button type="submit" className="btn-primary" style={{ padding: '0.75rem 1.5rem', borderRadius: '8px', cursor: 'pointer', background: 'hsl(var(--color-accent))', color: 'black', fontWeight: 'bold' }}>Ekle</button>
               </div>
             </form>
           </div>
@@ -642,26 +754,38 @@ function ProductsView({ products, onImport }) {
         >
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
             <h3 style={{ color: 'hsl(var(--color-accent))' }}>{p.name}</h3>
-            <span style={{ padding: '0.25rem 0.75rem', background: 'rgba(255,255,255,0.1)', borderRadius: '20px', fontSize: '0.8rem' }}>
-              {p.specs.voltage}
+            <span style={{ padding: '0.25rem 0.75rem', background: 'rgba(255,255,255,0.1)', borderRadius: '20px', fontSize: '0.8rem', fontFamily: 'monospace' }}>
+              {p.id}
             </span>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', fontSize: '0.9rem', color: 'hsl(var(--color-text-secondary))' }}>
-            <div>• Kesit Sayısı: <span style={{ color: 'white' }}>{p.specs.sections}</span></div>
-            <div>• Çap: <span style={{ color: 'white' }}>{p.specs.diameter_mm}mm</span></div>
-            <div>• Yük Kapasitesi: <span style={{ color: 'white' }}>{p.specs.payload_capacity_kg}kg</span></div>
-            <div>• Boyutlar: <span style={{ color: 'white' }}>{p.specs.dimensions_raw}</span></div>
-          </div>
-          <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
-            <strong>Özellikler:</strong>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '0.5rem' }}>
-              {p.specs.features.map((f, i) => (
-                <span key={i} style={{ fontSize: '0.8rem', background: 'rgba(50, 200, 100, 0.1)', color: '#4ade80', padding: '0.2rem 0.6rem', borderRadius: '4px' }}>
-                  {f}
-                </span>
-              ))}
+
+          {p.notes ? (
+            <div style={{ background: 'rgba(255,255,255,0.05)', padding: '1rem', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)' }}>
+              <div style={{ fontSize: '0.85rem', color: 'hsl(var(--color-text-muted))', marginBottom: '0.5rem', fontWeight: 'bold' }}>📝 Notlar:</div>
+              <div style={{ fontSize: '0.9rem', color: 'hsl(var(--color-text-secondary))', whiteSpace: 'pre-wrap' }}>{p.notes}</div>
             </div>
-          </div>
+          ) : (
+            <>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', fontSize: '0.9rem', color: 'hsl(var(--color-text-secondary))' }}>
+                <div>• Kesit Sayısı: <span style={{ color: 'white' }}>{p.specs.sections}</span></div>
+                <div>• Çap: <span style={{ color: 'white' }}>{p.specs.diameter_mm}mm</span></div>
+                <div>• Yük Kapasitesi: <span style={{ color: 'white' }}>{p.specs.payload_capacity_kg}kg</span></div>
+                <div>• Boyutlar: <span style={{ color: 'white' }}>{p.specs.dimensions_raw}</span></div>
+              </div>
+              {p.specs.features && p.specs.features.length > 0 && (
+                <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+                  <strong>Özellikler:</strong>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '0.5rem' }}>
+                    {p.specs.features.map((f, i) => (
+                      <span key={i} style={{ fontSize: '0.8rem', background: 'rgba(50, 200, 100, 0.1)', color: '#4ade80', padding: '0.2rem 0.6rem', borderRadius: '4px' }}>
+                        {f}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </>
+          )}
         </motion.div>
       ))
       }
@@ -1040,6 +1164,38 @@ function CostingView({ products, selectedProduct, onSelect, calculation, params,
 
       {/* Right Panel: Basket Summary */}
       <div className="glass-panel" style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+        <div style={{ padding: '1.5rem', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+          <h3 style={{ margin: '0 0 1rem 0', fontSize: '1.1rem' }}>Teklif Sepeti</h3>
+          {/* Proposal Number Input */}
+          <div style={{ marginBottom: '0.5rem' }}>
+            <label style={{ display: 'block', fontSize: '0.75rem', color: 'hsl(var(--color-text-muted))', marginBottom: '0.25rem' }}>
+              Teklif Numarası
+            </label>
+            <input
+              type="text"
+              value={productCustomizations.customProposalNo || ''}
+              onChange={(e) => {
+                const newCustomizations = {
+                  ...productCustomizations,
+                  customProposalNo: e.target.value
+                };
+                setProductCustomizations(newCustomizations);
+                localStorage.setItem('productCustomizations', JSON.stringify(newCustomizations));
+              }}
+              placeholder="Otomatik oluşturulacak"
+              style={{
+                width: '100%',
+                padding: '0.5rem',
+                background: 'rgba(0,0,0,0.2)',
+                border: '1px solid rgba(255,255,255,0.1)',
+                borderRadius: '6px',
+                color: 'white',
+                fontSize: '0.9rem',
+                fontFamily: 'monospace'
+              }}
+            />
+          </div>
+        </div>
         <div style={{ overflowY: 'auto', padding: '1rem', flex: 1, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           {basket && basket.length > 0 ? (
             basket.map((item) => (

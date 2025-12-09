@@ -1,16 +1,39 @@
-# React + Vite
+# Proposal AI - Tekliflendirme Uygulaması
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Modern, AI destekli tekliflendirme ve maliyet hesaplama platformu.
 
-Currently, two official plugins are available:
+## 🚀 Özellikler
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- ✅ Dinamik Maliyet Hesaplama
+- ✅ Teklif Numarası ve Versiyon Yönetimi
+- ✅ Ürün ve Firma Yönetimi
+- ✅ AI Asistan
+- ✅ Email Gönderimi
+- ✅ PDF/Word Export
+- ✅ Dashboard Analitiği
+- ✅ Teklif Arşivi ve Filtreleme
 
-## React Compiler
+## 📊 Canlı Demo
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+[Proposal AI'ı Deneyin](https://turyasin.github.io/proposal-app/)
 
-## Expanding the ESLint configuration
+## 🛠️ Teknolojiler
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- React + Vite
+- Framer Motion
+- Lucide Icons
+- HTML2PDF
+- DOCX
+
+## 📝 Kullanım
+
+1. **Ürünler** - Ürün kataloğunuzu yönetin
+2. **Maliyet/Teklif** - Maliyet hesaplayın ve teklif oluşturun
+3. **Firmalar** - Müşteri firmalarınızı ekleyin
+4. **Teklif Arşivi** - Geçmiş tekliflerinizi görüntüleyin
+5. **AI Asistan** - Yardım alın
+6. **Dashboard** - Performans analizleri
+
+## 🎯 Geliştirici
+
+Yasin TÜR - [GitHub](https://github.com/turyasin)

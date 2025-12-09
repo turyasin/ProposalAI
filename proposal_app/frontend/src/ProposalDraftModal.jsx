@@ -11,7 +11,8 @@ export function ProposalDraftModal({
     onSave,
     basket, // Receive basket prop
     initialData, // Receive initial data for editing
-    onCancel // Receive onCancel handler
+    onCancel, // Receive onCancel handler
+    productCustomizations // Receive customizations for proposal number
 }) {
     const [formData, setFormData] = useState({
         companyId: '',
@@ -22,7 +23,9 @@ export function ProposalDraftModal({
         preparedByEmail: '',
         preparedByPhone: '',
         validityDays: 30,
-        notes: ''
+        notes: '',
+        proposalNo: '',
+        version: 'v1.0'
     });
 
     // Populate form data when initialData is provided
@@ -36,19 +39,33 @@ export function ProposalDraftModal({
                 if (idx !== -1) contactIdx = idx;
             }
 
+            // Calculate next version if editing
+            const currentVersion = initialData.version || 'v1.0';
+            const versionMatch = currentVersion.match(/v(\d+)\.(\d+)/);
+            let nextVersion = 'v1.1';
+            if (versionMatch) {
+                const major = parseInt(versionMatch[1]);
+                const minor = parseInt(versionMatch[2]);
+                nextVersion = `v${major}.${minor + 1}`;
+            }
+
             setFormData({
                 companyId: initialData.company.id || '',
                 contactIndex: contactIdx,
                 paymentTerms: initialData.paymentTerms || '30 gün içinde ödeme',
-                preparedBy: initialData.preparedBy?.name || '',
+                preparedBy: initialData.preparedBy?.name || initialData.preparer || '',
                 preparedByTitle: initialData.preparedBy?.title || '',
                 preparedByEmail: initialData.preparedBy?.email || '',
                 preparedByPhone: initialData.preparedBy?.phone || '',
                 validityDays: initialData.validityDays || 30,
-                notes: initialData.notes || ''
+                notes: initialData.notes || '',
+                proposalNo: initialData.proposalNo || '',
+                version: nextVersion
             });
         } else {
             // Reset form if no initialData (new proposal)
+            // Use custom proposal number from basket if available
+            const customNo = productCustomizations?.customProposalNo || '';
             setFormData({
                 companyId: '',
                 contactIndex: '',
@@ -58,10 +75,12 @@ export function ProposalDraftModal({
                 preparedByEmail: '',
                 preparedByPhone: '',
                 validityDays: 30,
-                notes: ''
+                notes: '',
+                proposalNo: customNo,
+                version: 'v1.0'
             });
         }
-    }, [initialData, companies, isOpen]);
+    }, [initialData, companies, isOpen, productCustomizations]);
 
     if (!isOpen) return null;
 
@@ -108,8 +127,12 @@ export function ProposalDraftModal({
             ? basket
             : [{ product, calculation }];
 
+        // Generate proposal number if not provided
+        const finalProposalNo = formData.proposalNo.trim() || `PR-${Date.now().toString().slice(-6)}`;
+
         const proposalData = {
-            proposalNo: `PR-${Date.now().toString().slice(-6)}`,
+            proposalNo: finalProposalNo,
+            version: formData.version,
             date: new Date().toISOString(),
             items: items, // Save all items
             product: items[0].product, // Keep main product for legacy support if needed
@@ -124,6 +147,7 @@ export function ProposalDraftModal({
                 email: formData.preparedByEmail,
                 phone: formData.preparedByPhone
             },
+            preparer: formData.preparedBy, // For filtering in archive
             validityDays: formData.validityDays,
             notes: formData.notes
         };
@@ -276,6 +300,53 @@ export function ProposalDraftModal({
                                         </option>
                                     ))}
                                 </select>
+                            </div>
+                        </div>
+
+                        {/* Proposal Number and Version */}
+                        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '1rem' }}>
+                            <div>
+                                <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem', fontWeight: '500' }}>
+                                    <FileText size={16} style={{ display: 'inline', marginRight: '0.5rem' }} />
+                                    Teklif Numarası
+                                </label>
+                                <input
+                                    type="text"
+                                    value={formData.proposalNo}
+                                    onChange={(e) => setFormData({ ...formData, proposalNo: e.target.value })}
+                                    placeholder="Otomatik oluşturulacak"
+                                    style={{
+                                        width: '100%',
+                                        padding: '0.75rem',
+                                        background: 'rgba(0,0,0,0.2)',
+                                        border: '1px solid rgba(255,255,255,0.1)',
+                                        borderRadius: '8px',
+                                        color: 'white',
+                                        fontSize: '1rem',
+                                        fontFamily: 'monospace'
+                                    }}
+                                />
+                            </div>
+                            <div>
+                                <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem', fontWeight: '500' }}>
+                                    Versiyon
+                                </label>
+                                <input
+                                    type="text"
+                                    value={formData.version}
+                                    onChange={(e) => setFormData({ ...formData, version: e.target.value })}
+                                    style={{
+                                        width: '100%',
+                                        padding: '0.75rem',
+                                        background: 'rgba(0,0,0,0.2)',
+                                        border: '1px solid rgba(255,255,255,0.1)',
+                                        borderRadius: '8px',
+                                        color: 'white',
+                                        fontSize: '1rem',
+                                        fontFamily: 'monospace',
+                                        fontWeight: 'bold'
+                                    }}
+                                />
                             </div>
                         </div>
 

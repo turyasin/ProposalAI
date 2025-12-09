@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
-import { Search, Filter, Download, Trash2, FileText, Calendar, DollarSign, Building2, FileDown, Edit2 } from 'lucide-react';
+import { Search, Filter, Download, Trash2, FileText, Calendar, DollarSign, Building2, FileDown, Edit2, Mail } from 'lucide-react';
 
 export function ArchiveView({ proposals, companies, onDelete, onExport, onEdit }) {
     const [searchTerm, setSearchTerm] = useState('');
     const [filterCompany, setFilterCompany] = useState('');
-    const [filterProduct, setFilterProduct] = useState('');
+    const [filterPreparer, setFilterPreparer] = useState('');
+
+    // Extract unique preparers from proposals
+    const preparers = [...new Set(proposals.map(p => p.preparer).filter(Boolean))];
 
     const filteredProposals = proposals.filter(proposal => {
         const matchesSearch = !searchTerm ||
@@ -12,9 +15,9 @@ export function ArchiveView({ proposals, companies, onDelete, onExport, onEdit }
             proposal.proposalNo.toLowerCase().includes(searchTerm.toLowerCase());
 
         const matchesCompany = !filterCompany || proposal.company?.id === parseInt(filterCompany);
-        const matchesProduct = !filterProduct || proposal.product.id === filterProduct;
+        const matchesPreparer = !filterPreparer || proposal.preparer === filterPreparer;
 
-        return matchesSearch && matchesCompany && matchesProduct;
+        return matchesSearch && matchesCompany && matchesPreparer;
     });
 
     const getCompanyName = (companyId) => {
@@ -26,6 +29,77 @@ export function ArchiveView({ proposals, companies, onDelete, onExport, onEdit }
         <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
             <h2 style={{ marginBottom: '2rem' }}>Teklif Arşivi</h2>
 
+            {/* Filters Bar */}
+            <div className="glass-panel" style={{ padding: '1rem', marginBottom: '1.5rem', display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'center' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'hsl(var(--color-text-muted))' }}>
+                    <Filter size={20} />
+                    <span style={{ fontSize: '0.9rem', fontWeight: 'bold' }}>Filtrele:</span>
+                </div>
+
+                <div style={{ position: 'relative', minWidth: '250px' }}>
+                    <Search size={16} style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: 'hsl(var(--color-text-muted))' }} />
+                    <input
+                        type="text"
+                        placeholder="Teklif No veya Ürün Ara..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        style={{
+                            width: '100%',
+                            padding: '0.5rem 0.5rem 0.5rem 2.2rem',
+                            background: 'rgba(255,255,255,0.05)',
+                            border: '1px solid rgba(255,255,255,0.1)',
+                            borderRadius: '6px',
+                            color: 'white'
+                        }}
+                    />
+                </div>
+
+                <select
+                    value={filterCompany}
+                    onChange={(e) => setFilterCompany(e.target.value)}
+                    style={{
+                        padding: '0.5rem',
+                        background: 'rgba(255,255,255,0.05)',
+                        border: '1px solid rgba(255,255,255,0.1)',
+                        borderRadius: '6px',
+                        color: 'white',
+                        minWidth: '150px'
+                    }}
+                >
+                    <option value="">Tüm Firmalar</option>
+                    {companies.map(c => (
+                        <option key={c.id} value={c.id}>{c.name}</option>
+                    ))}
+                </select>
+
+                <select
+                    value={filterPreparer}
+                    onChange={(e) => setFilterPreparer(e.target.value)}
+                    style={{
+                        padding: '0.5rem',
+                        background: 'rgba(255,255,255,0.05)',
+                        border: '1px solid rgba(255,255,255,0.1)',
+                        borderRadius: '6px',
+                        color: 'white',
+                        minWidth: '150px'
+                    }}
+                >
+                    <option value="">Tüm Teklif Verenler</option>
+                    {preparers.map((p, index) => (
+                        <option key={index} value={p}>{p}</option>
+                    ))}
+                </select>
+
+                {(searchTerm || filterCompany || filterPreparer) && (
+                    <button
+                        onClick={() => { setSearchTerm(''); setFilterCompany(''); setFilterPreparer(''); }}
+                        style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}
+                    >
+                        <Trash2 size={14} /> Temizle
+                    </button>
+                )}
+            </div>
+
             {/* Proposals List */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                 {filteredProposals.map((proposal) => (
@@ -35,7 +109,22 @@ export function ArchiveView({ proposals, companies, onDelete, onExport, onEdit }
                                 <div style={{ fontSize: '0.85rem', color: 'hsl(var(--color-text-muted))', marginBottom: '0.25rem' }}>
                                     Teklif No
                                 </div>
-                                <div style={{ fontWeight: 'bold', fontSize: '1.1rem' }}>{proposal.proposalNo}</div>
+                                <div style={{ fontWeight: 'bold', fontSize: '1.1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                    {proposal.proposalNo}
+                                    {proposal.version && (
+                                        <span style={{
+                                            fontSize: '0.75rem',
+                                            background: 'rgba(14, 99, 156, 0.2)',
+                                            color: 'hsl(var(--color-accent))',
+                                            padding: '0.15rem 0.5rem',
+                                            borderRadius: '4px',
+                                            fontFamily: 'monospace',
+                                            fontWeight: 'bold'
+                                        }}>
+                                            {proposal.version}
+                                        </span>
+                                    )}
+                                </div>
                                 <div style={{ fontSize: '0.85rem', color: 'hsl(var(--color-text-secondary))', marginTop: '0.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                                     <Calendar size={14} />
                                     {new Date(proposal.date).toLocaleDateString('tr-TR')}
@@ -78,6 +167,29 @@ export function ArchiveView({ proposals, companies, onDelete, onExport, onEdit }
                                 >
                                     <Edit2 size={16} />
                                     Düzenle
+                                </button>
+                                <button
+                                    onClick={() => {
+                                        const companyEmail = proposal.company?.email || '';
+                                        const subject = `Teklif: ${proposal.proposalNo} ${proposal.version || ''}`;
+                                        const body = `Sayın ${proposal.company?.contact_person || 'Yetkili'},\n\nEk'te ${proposal.proposalNo} ${proposal.version || ''} numaralı teklifimizi bulabilirsiniz.\n\nTeklif Özeti:\n- Teklif No: ${proposal.proposalNo} ${proposal.version || ''}\n- Tarih: ${new Date(proposal.date).toLocaleDateString('tr-TR')}\n- Tutar: $${(proposal.totalPrice || proposal.calculation.suggested_price).toLocaleString('en-US', { minimumFractionDigits: 2 })}\n\nSorularınız için lütfen bizimle iletişime geçin.\n\nSaygılarımızla,\n${proposal.preparedBy?.name || proposal.preparer || ''}`;
+                                        window.location.href = `mailto:${companyEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+                                    }}
+                                    style={{
+                                        padding: '0.65rem 1rem',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '0.5rem',
+                                        fontSize: '0.85rem',
+                                        background: 'rgba(34, 197, 94, 0.2)',
+                                        border: '1px solid rgba(34, 197, 94, 0.3)',
+                                        borderRadius: '8px',
+                                        color: '#22c55e',
+                                        cursor: 'pointer'
+                                    }}
+                                >
+                                    <Mail size={16} />
+                                    Email
                                 </button>
                                 <button
                                     onClick={() => onExport(proposal, 'pdf')}
